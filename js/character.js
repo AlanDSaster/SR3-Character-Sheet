@@ -272,8 +272,9 @@ $(document).ready(
 
 			ResetDicePools() {
 				for(i=0; i < character.dicepools.length; i++) {
-					if(character.dicepools[i] != )
-					character.dicepools[i].current = character.dicepools[i].maximum;
+					if(character.dicepools[i] != character.skills.karma) {
+						character.dicepools[i].current = character.dicepools[i].maximum;
+					}
 				}
 			},
 
