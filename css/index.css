@@ -1,0 +1,52 @@
+body {
+  background: #222;
+}
+
+input[type=number] {
+  width: 45px;
+}
+
+table {
+  background-color: white;
+  border: 1px solid black;
+}
+
+th {
+  font-variant: small-caps;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+/*****
+** Collapsibles
+*****/
+ /* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+  padding: 6px 6px 6px 12px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #222;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 0 18px;
+  background-color: #DFDFDF;
+  max-height: 0;
+  overflow: auto;
+  transition: max-height 0.2s ease-out;
+}
