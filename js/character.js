@@ -117,13 +117,8 @@ function UpdateForm() {
 	document.getElementById('character.attributes.willpower').value = character.attributes.willpower ;
 	document.getElementById('character.attributes.charisma').value = character.attributes.charisma ;
 
-	x = parseInt(character.attributes.quickness) + parseInt(character.attributes.intelligence);
-	x = x / 2;
-	character.attributes.reaction = Math.floor(x);
-
 	document.getElementById('character.attributes.magic').value = character.attributes.magic ;
 	document.getElementById('character.attributes.reaction').value = character.attributes.reaction ;
-	document.getElementById('character.attributes.reaction').value = character.attributes.reaction;
 	document.getElementById('character.attributes.essence').value = character.attributes.essence ;
 
 	//update condition
@@ -136,6 +131,34 @@ function UpdateForm() {
 	updateConditionMonitor();
 
 	//update dice pools
+	UpdateDicePools();
+
+	//update skills
+	UpdateSkillsForm();
+}
+
+function UpdateCharacter() {
+
+	//transfer form elements to character
+	character.bio.name = document.getElementById('character.bio.name').value;
+	character.bio.race = document.getElementById('character.bio.race').value;
+	character.bio.ghoul = document.getElementById('character.bio.ghoul').checked;
+
+	//calculate character attributes
+	x = parseInt(character.attributes.quickness) + parseInt(character.attributes.intelligence);
+	x = x / 2;
+	character.attributes.reaction = Math.floor(x);
+
+	var race = document.getElementById('character.bio.race').value;
+	var racialkarmarate = 20;
+	if(race = 'human') racialkarmarate=20;
+	var karmapool_max = karma_earned / racialkarmarate;
+
+	//transfer calculated character attributes to form elements
+
+}
+
+function UpdateDicePools() {
 	document.getElementById('character.dicepools.karma.current').value = character.dicepools.karma.current ;
 	document.getElementById('character.dicepools.combat.current').value = character.dicepools.combat.current ;
 	document.getElementById('character.dicepools.control.current').value = character.dicepools.control.current ;
@@ -143,32 +166,18 @@ function UpdateForm() {
 	document.getElementById('character.dicepools.spell.current').value = character.dicepools.spell.current ;
 	document.getElementById('character.dicepools.astral.current').value = character.dicepools.astral.current ;
 
-	var race = document.getElementById('character.bio.race').value;
-	var racialkarmarate = 20;
-	if(race = 'human') racialkarmarate=20;
-	var karmapool_max = karma_earned / racialkarmarate;
-
 	document.getElementById('character.dicepools.karma.maximum').value = character.dicepools.karma.maximum ;
 	document.getElementById('character.dicepools.combat.maximum').value = character.dicepools.combat.maximum ;
 	document.getElementById('character.dicepools.control.maximum').value = character.dicepools.control.maximum ;
 	document.getElementById('character.dicepools.hacking.maximum').value = character.dicepools.hacking.maximum ;
 	document.getElementById('character.dicepools.spell.maximum').value = character.dicepools.spell.maximum ;
 	document.getElementById('character.dicepools.astral.maximum').value = character.dicepools.astral.maximum ;
-
-	//update skills
-	UpdateSkillsForm();
-}
-
-function UpdateCharacter() {
-	character.bio.name = document.getElementById('character.bio.name').value;
-	character.bio.race = document.getElementById('character.bio.race').value;
-	character.bio.ghoul = document.getElementById('character.bio.ghoul').checked;
 }
 
 function UpdateAttribute(id, value) {
-
 	var statement = id + '="' + value + '"';
 	eval( statement );
+	UpdateForm();
 }
 
 function LoadSkills() {
@@ -276,11 +285,17 @@ function UpdateSkillsForm() {
 }
 
 function ResetDicePools() {
-	for(i=0; i < character.dicepools.length; i++) {
-		if(Object.is(character.dicepools[i], character.skills.karma)) {
-			character.dicepools[i].current = character.dicepools[i].maximum;
-		}
-	}
+	character.dicepools.combat.current = character.dicepools.combat.maximum;
+	character.dicepools.control.current = character.dicepools.control.maximum;
+	character.dicepools.hacking.current = character.dicepools.hacking.maximum;
+	character.dicepools.spell.current = character.dicepools.spell.maximum;
+	character.dicepools.astral.current = character.dicepools.astral.maximum;
+	UpdateForm();
+}
+
+function ResetKarmaPool() {
+	character.dicepools.karma.current = character.dicepools.karma.maximum;
+	UpdateForm();
 }
 
 function AddNewSkillRow(name, value) {

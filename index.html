@@ -157,15 +157,15 @@
 					<tr><th>dice pool</th><th>current</th><th>maximum</th></tr>
 				</thead>
 				<tbody>
-					<tr><td>karma</td><td><input id="character.dicepools.karma.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.karma.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>combat</td><td><input id="character.dicepools.combat.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.combat.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>control</td><td><input id="character.dicepools.control.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.control.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>hacking</td><td><input id="character.dicepools.hacking.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.hacking.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>spell</td><td><input id="character.dicepools.spell.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.spell.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>astral</td><td><input id="character.dicepools.astral.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.astral.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Karma</td><td><input id="character.dicepools.karma.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.karma.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Combat</td><td><input id="character.dicepools.combat.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.combat.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Control</td><td><input id="character.dicepools.control.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.control.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Hacking</td><td><input id="character.dicepools.hacking.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.hacking.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Spell</td><td><input id="character.dicepools.spell.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.spell.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Astral</td><td><input id="character.dicepools.astral.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.astral.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 				</tbody>
 				<tfoot>
-					<tr><td colspan=3><button onclick='ResetDicePools();'>Reset Dice Pools</button><button>Reset Karma Pool</button></td></tr>
+					<tr><td colspan=5><button onclick='ResetDicePools();'>Reset Dice Pools</button><button onclick='ResetKarmaPool();'>Reset Karma Pool</button></td></tr>
 				</tfoot>
 			</table>
 		</div>
