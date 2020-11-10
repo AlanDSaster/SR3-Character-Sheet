@@ -11,12 +11,14 @@
 		<link rel="stylesheet" href="css/index.css" />
 		<link rel="stylesheet" href="css/condition_monitor.css" />
 		<link rel="stylesheet" href="css/userinputoverlay.css" />
+		<link rel="stylesheet" href="css/snackbar.css" />
 
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/character.js"></script>
 		<script type="text/javascript" src="js/userinputoverlay.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
 		<script type="text/javascript" src="js/conditionmonitor.js"></script>
+		<script type="text/javascript" src="js/snackbar.js"></script>
 
 	</head>
 
@@ -178,7 +180,7 @@
 		<div class='content'>
 			<table id='skills_table'>
 				<thead>
-					<tr><th>Skill</th><th>Level</th></tr>
+					<tr><th>Skill</th><th>Level</th><th colspan=2>Roll Dice</th><th>TN</th></tr>
 				</thead>
 
 				<tbody>
@@ -227,6 +229,8 @@
 			</table>
 		</div>
 
+		<div id='snackbar'>
+		</div>
 
 	</body>
 </html>

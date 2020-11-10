@@ -240,7 +240,7 @@ function AddBlankSkillRow() {
 	content.innerHTML = 'Open';
 	content.style.height = '25px';
 	content.style.width = '55px';
-	content.setAttribute('onchange', 'RollOpen(this.id);');
+	content.setAttribute('onclick', 'RollOpen(this.id + ".name", this.id + ".value");');
 
 	td = document.createElement('td');
 	row.appendChild(td);
@@ -250,7 +250,7 @@ function AddBlankSkillRow() {
 	content.innerHTML = 'VsTN';
 	content.style.height = '25px';
 	content.style.width = '55px';
-	content.setAttribute('onclick', 'RollOpen(this.id);');
+	content.setAttribute('onclick', 'RollVsTN(this.id + ".name", this.id + ".value", this.id + ".tn");');
 
 	td = document.createElement('td');
 	row.appendChild(td);
@@ -312,4 +312,35 @@ function exportCharacter() {
 	download.setAttribute('href', URL.createObjectURL(blob));
 	download.setAttribute('download', 'character.txt');
 	download.click();
+}
+
+
+//copy to clipboard
+const CopyToClipboard = str => {
+  const el = document.createElement('textarea');
+  el.value = str;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+	SnackbarNotification('Copied text to clipboard');
+};
+
+function RollOpen(skill, dice) {
+	console.log('rolling open');
+	console.log('skill: ' + skill);
+	console.log('dice: ' + dice);
+	//&{template:default} {{name=Open Skill Test}} {{attack=[[5d6kh1!!]]}} {{Damage=[[6]]S}}
+	var text = '&{template:default} {{name=Open Skill Test}} {{' + skill + '=[[' + dice + 'd6kh1!!]] }}';
+	CopyToClipboard(text);
+}
+
+function RollVsTN(skill, dice, tn) {
+	console.log('rolling vs TN');
+	console.log('skill: ' + skill);
+	console.log('dice: ' + dice);
+	console.log('tn: ' + tn);
+	//&{template:default} {{name=Pistols (Open)}} {{attack=[[5d6kh1!!]]}} {{Damage=[[6]]S}}
+	var text = '&{template:default} {{name=Skill Test}} {{' + skill + '=[[' + dice + 'd6>' + tn + '!!]] }}';
+	CopyToClipboard(text);
 }
