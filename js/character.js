@@ -11,7 +11,7 @@ $(document).ready(
 		download = document.getElementById('exportlink');
 		upload = document.getElementById('importlink');
 
-		upload.addEventListener('change', () => {
+		upload.addEventListener('change', function() {
 				var files = upload.files;
 				if(files.length == 0) return;
 
@@ -19,18 +19,16 @@ $(document).ready(
 
 				let reader = new FileReader();
 
-				reader.onload = (e) => {
-					const file = e.target.result;
-					character = JSON.parse(file);
-				};
-
-				reader.onerror = (e) => alert(e.target.error.name);
-
+				reader.onload = function() {
+					console.log('before load: \n' + JSON.stringify(character));
+					character = JSON.parse(reader.result);
+					console.log('after load: \n' + JSON.stringify(character));
+					UpdateForm();
+				}
 				reader.readAsText(file);
-
-				UpdateForm();
 			}
 		);
+
 
 		//set up character object
 		character = {
@@ -42,14 +40,14 @@ $(document).ready(
 			},
 
 			attributes : {
-				body 					: 5,
-				quickness 		: 6,
-				strength 			: 4,
-				intelligence	: 6,
-				willpower 		: 4,
-				charisma 			: 4,
+				body 					: 0,
+				quickness 		: 0,
+				strength 			: 0,
+				intelligence	: 0,
+				willpower 		: 0,
+				charisma 			: 0,
 
-				magick : 0,
+				magic : 0,
 				reaction : 0,
 				essence : 0
 			},
@@ -88,228 +86,215 @@ $(document).ready(
 			},
 
 			skills : [
-				{ name : '',	value : 0 }
-			],
-
-			UpdateForm : function(attribute) {
-
-				var x;
-
-				//update character bio
-				$("#character.bio.name").value = character.bio.name ;
-				$("#character.bio.race").value = character.bio.race ;
-				$("#character.bio.ghoul").checked = character.bio.ghoul ;
-
-				//update attributes
-				$("#character.attributes.body").value = character.attributes.body ;
-				$("#character.attributes.quickness").value = character.attributes.quickness ;
-				$("#character.attributes.strength").value = character.attributes.strength ;
-				$("#character.attributes.intelligence").value = character.attributes.intelligence ;
-				$("#character.attributes.willpower").value = character.attributes.willpower ;
-				$("#character.attributes.charisma").value = character.attributes.charisma ;
-
-				console.log('reaction: ' + character.attributes.reaction );
-				console.log('quickness: ' + character.attributes.quickness );
-				console.log('intelligence: ' + character.attributes.intelligence );
-
-				x = parseInt(character.attributes.quickness) + parseInt(character.attributes.intelligence);
-				x = x / 2;
-				character.attributes.reaction = Math.floor(x);
-
-				$("#character.attributes.magic").value = character.attributes.magic ;
-				$("#character.attributes.reaction").value = character.attributes.reaction ;
-				document.getElementById("character.attributes.reaction").value = character.attributes.reaction;
-				$("#character.attributes.essence").value = character.attributes.essence ;
-
-				//update condition
-				$("#character.condition.stun").value = character.condition.stun ;
-				$("#character.condition.physical").value = character.condition.physical ;
-				$("#character.condition.overflow").value = character.condition.overflow ;
-				$("#character.condition.penalties").value = character.condition.penalties ;
-
-
-				updateConditionMonitor();
-
-				//update dice pools
-				$("character.dicepools.karma.current").value = character.dicepools.karma.current ;
-				$("character.dicepools.combat.current").value = character.dicepools.combat.current ;
-				$("character.dicepools.control.current").value = character.dicepools.control.current ;
-				$("character.dicepools.hacking.current").value = character.dicepools.hacking.current ;
-				$("character.dicepools.spell.current").value = character.dicepools.spell.current ;
-				$("character.dicepools.astral.current").value = character.dicepools.astral.current ;
-
-				var race = document.getElementById('character.bio.race').value;
-				var racialkarmarate = 20;
-				if(race = 'human') racialkarmarate=20;
-				var karmapool_max = karma_earned / racialkarmarate;
-
-				$("character.dicepools.karma.maximum").value = character.dicepools.karma.maximum ;
-				$("character.dicepools.combat.maximum").value = character.dicepools.combat.maximum ;
-				$("character.dicepools.control.maximum").value = character.dicepools.control.maximum ;
-				$("character.dicepools.hacking.maximum").value = character.dicepools.hacking.maximum ;
-				$("character.dicepools.spell.maximum").value = character.dicepools.spell.maximum ;
-				$("character.dicepools.astral.maximum").value = character.dicepools.astral.maximum ;
-
-				//update skills
-				this.UpdateSkillsForm();
-			},
-
-			UpdateCharacter : function() {
-				character.bio.name = document.getElementById('character.bio.name').value;
-				character.bio.race = document.getElementById('character.bio.race').value;
-				character.bio.ghoul = document.getElementById('character.bio.ghoul').checked;
-			},
-
-			UpdateAttribute : function(id, value) {
-				var statement = id + '="' + value + '"';
-				eval( statement );
-			},
-
-			LoadSkills : function() {
-
-				var table = document.getElementById("skills_table");
-				var tbody = table.tBodies[0];
-				var rows = tbody.rows;
-
-				while(rows.length < character.skills.length) {
-					AddBlankSkillRow();
+				{
+					name : '',
+					value : 0,
+					tn : 4
 				}
-
-				for(i = 0; i < character.skills.length; i++) {
-					fieldName = document.getElementById('character.skills[' + i + ']');
-					if(document.body.contains(fieldName) == false) {
-
-					}
-					fieldValue = document.getElementById('character.skills[' + i + ']');
-					if(document.body.contains(fieldName) == false) {
-
-					}
-
-					document.getElementById('character.skills[' + i + '].name').value = character.skills[i].name;
-					document.getElementById('character.skills[' + i + '].value').value = character.skills[i].value;
-
-				}
-			},
-
-			AddBlankSkillRow : function() {
-				var table = document.getElementById('skills_table');
-				var tbody = table.tBodies[0];
-				var rows = tbody.rows;
-				var row;
-
-				//row = <input type=text><input type=number>
-				row = document.createElement('tr');
-				tbody.appendChild(row);
-
-				td = document.createElement('td');
-				row.appendChild(td);
-				content = document.createElement('input');
-				row.appendChild(content);
-				content.setAttribute('id', 'character.skills["' + rows.length + '"].name');
-				content.setAttribute('onchange', 'character.UpdateAttribute(this.id, this.value);');
-
-				td = document.createElement('td');
-				row.appendChild(td);
-				content = document.createElement('input');
-				row.appendChild(content);
-				content.setAttribute('id', 'character.skills["' + rows.length + '"].value');
-				content.setAttribute('type', 'number');
-				content.setAttribute('onchange', 'character.UpdateAttribute(this.id, this.value);');
-
-				td = document.createElement('td');
-				row.appendChild(td);
-				content = document.createElement('button');
-				row.appendChild(content);
-				content.setAttribute('id', 'character.skills["' + rows.length + '"]');
-				content.setAttribute('value', 'Open');
-				content.setAttribute('onchange', 'character.RollOpen(this.id);');
-
-				td = document.createElement('td');
-				row.appendChild(td);
-				content = document.createElement('button');
-				row.appendChild(content);
-				content.setAttribute('id', 'character.skills["' + rows.length + '"]');
-				content.setAttribute('value', 'VsTN');
-				content.setAttribute('onclick', 'character.RollOpen(this.id);');
-
-				td = document.createElement('td');
-				row.appendChild(td);
-				content = document.createElement('input');
-				row.appendChild(content);
-				content.setAttribute('id', 'character.skills["' + rows.length + '"].TN');
-				content.setAttribute('type', 'number');
-				content.setAttribute('value', 4);
-				content.setAttribute('onclick', 'character.RollOpen(this.id, this.value);');
-
-			},
-
-			UpdateSkillsForm : function() {
-				var table = document.getElementById("skills_table");
-				var tbody = table.tBodies[0];
-				var rows = tbody.rows;
-				var i;
-
-				console.log(rows.length);
-				console.log(character.skills.length);
-
-				if(rows.length == 0) {
-					if(character.skills.length > 0) {
-						console.log('adding blank skill row');
-						character.AddBlankSkillRow();
-					} else {
-						console.log('adding new skill row');
-						character.AddNewSkillRow();
-					}
-				}
-
-				console.log(character.skills);
-				console.log(rows);
-				for(i = 0; i < character.skills.length; i++) {
-					//character.skills[i].name = document.getElementById('character.skills[' + i + '].name').value;
-					//character.skills[i].name = document.getElementById('character.skills[' + i + '].value').value;
-				}
-			},
-
-			ResetDicePools() {
-				for(i=0; i < character.dicepools.length; i++) {
-					if(character.dicepools[i] != character.skills.karma) {
-						character.dicepools[i].current = character.dicepools[i].maximum;
-					}
-				}
-			},
-
-			AddNewSkillRow : function(name, value) {
-				character.skills.push( { name : "", value : 0 } );
-				character.AddBlankSkillRow();
-			},
-
-			import() {
-				upload.click();
-			},
-
-			export() {
-				var blob = new Blob([JSON.stringify(character)], { type: "text/plain; charset=utf-8"});
-				download.setAttribute("href", URL.createObjectURL(blob));
-				download.setAttribute('download', "character.txt");
-				download.click();
-			}
+			]
 
 		}; //end of character
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		character.UpdateForm();
+		UpdateForm();
 	}	//end of $(document).ready
 );	//end of $(document).ready
+
+
+function UpdateForm() {
+
+	var x;
+
+	//update character bio
+	document.getElementById('character.bio.name').value = character.bio.name ;
+	document.getElementById('character.bio.race').value = character.bio.race ;
+	document.getElementById('character.bio.ghoul').checked = character.bio.ghoul ;
+
+	//update attributes
+	document.getElementById('character.attributes.body').value = character.attributes.body ;
+	document.getElementById('character.attributes.quickness').value = character.attributes.quickness ;
+	document.getElementById('character.attributes.strength').value = character.attributes.strength ;
+	document.getElementById('character.attributes.intelligence').value = character.attributes.intelligence ;
+	document.getElementById('character.attributes.willpower').value = character.attributes.willpower ;
+	document.getElementById('character.attributes.charisma').value = character.attributes.charisma ;
+
+	x = parseInt(character.attributes.quickness) + parseInt(character.attributes.intelligence);
+	x = x / 2;
+	character.attributes.reaction = Math.floor(x);
+
+	document.getElementById('character.attributes.magic').value = character.attributes.magic ;
+	document.getElementById('character.attributes.reaction').value = character.attributes.reaction ;
+	document.getElementById('character.attributes.reaction').value = character.attributes.reaction;
+	document.getElementById('character.attributes.essence').value = character.attributes.essence ;
+
+	//update condition
+	document.getElementById('character.condition.stun').value = character.condition.stun ;
+	document.getElementById('character.condition.physical').value = character.condition.physical ;
+	document.getElementById('character.condition.overflow').value = character.condition.overflow ;
+	document.getElementById('character.condition.penalties').value = character.condition.penalties ;
+
+
+	updateConditionMonitor();
+
+	//update dice pools
+	document.getElementById('character.dicepools.karma.current').value = character.dicepools.karma.current ;
+	document.getElementById('character.dicepools.combat.current').value = character.dicepools.combat.current ;
+	document.getElementById('character.dicepools.control.current').value = character.dicepools.control.current ;
+	document.getElementById('character.dicepools.hacking.current').value = character.dicepools.hacking.current ;
+	document.getElementById('character.dicepools.spell.current').value = character.dicepools.spell.current ;
+	document.getElementById('character.dicepools.astral.current').value = character.dicepools.astral.current ;
+
+	var race = document.getElementById('character.bio.race').value;
+	var racialkarmarate = 20;
+	if(race = 'human') racialkarmarate=20;
+	var karmapool_max = karma_earned / racialkarmarate;
+
+	document.getElementById('character.dicepools.karma.maximum').value = character.dicepools.karma.maximum ;
+	document.getElementById('character.dicepools.combat.maximum').value = character.dicepools.combat.maximum ;
+	document.getElementById('character.dicepools.control.maximum').value = character.dicepools.control.maximum ;
+	document.getElementById('character.dicepools.hacking.maximum').value = character.dicepools.hacking.maximum ;
+	document.getElementById('character.dicepools.spell.maximum').value = character.dicepools.spell.maximum ;
+	document.getElementById('character.dicepools.astral.maximum').value = character.dicepools.astral.maximum ;
+
+	//update skills
+	UpdateSkillsForm();
+}
+
+function UpdateCharacter() {
+	character.bio.name = document.getElementById('character.bio.name').value;
+	character.bio.race = document.getElementById('character.bio.race').value;
+	character.bio.ghoul = document.getElementById('character.bio.ghoul').checked;
+}
+
+function UpdateAttribute(id, value) {
+
+	var statement = id + '="' + value + '"';
+	eval( statement );
+}
+
+function LoadSkills() {
+
+	var table = document.getElementById("skills_table");
+	var tbody = table.tBodies[0];
+	var rows = tbody.rows;
+
+	while(rows.length < character.skills.length) {
+		AddBlankSkillRow();
+	}
+
+	for(i = 0; i < character.skills.length; i++) {
+		fieldName = document.getElementById('character.skills[' + i + ']');
+		if(document.body.contains(fieldName) == false) {
+
+		}
+		fieldValue = document.getElementById('character.skills[' + i + ']');
+		if(document.body.contains(fieldName) == false) {
+
+		}
+
+		document.getElementById('character.skills[' + i + '].name').value = character.skills[i].name;
+		document.getElementById('character.skills[' + i + '].value').value = character.skills[i].value;
+
+	}
+}
+
+function AddBlankSkillRow() {
+
+	var table = document.getElementById('skills_table');
+	var tbody = table.tBodies[0];
+	var rows = tbody.rows;
+	var row;
+
+	//row = <input type=text><input type=number>
+	row = document.createElement('tr');
+	tbody.appendChild(row);
+
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].name');
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].value');
+	content.setAttribute('type', 'number');
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('button');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + ']');
+	content.innerHTML = 'Open';
+	content.style.height = '25px';
+	content.style.width = '55px';
+	content.setAttribute('onchange', 'RollOpen(this.id);');
+
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('button');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + ']');
+	content.innerHTML = 'VsTN';
+	content.style.height = '25px';
+	content.style.width = '55px';
+	content.setAttribute('onclick', 'RollOpen(this.id);');
+
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].TN');
+	content.setAttribute('type', 'number');
+	content.value = 4;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+}
+
+function UpdateSkillsForm() {
+	var table = document.getElementById('skills_table');
+	var tbody = table.tBodies[0];
+	var rows = tbody.rows;
+	var i;
+
+	if(rows.length == 0) {
+		if(character.skills.length > 0) {
+			AddBlankSkillRow();
+		} else {
+			AddNewSkillRow();
+		}
+	}
+
+	for(i = 0; i < character.skills.length; i++) {
+		document.getElementById('character.skills[' + i + '].name').value = character.skills[i].name;
+		document.getElementById('character.skills[' + i + '].value').value = character.skills[i].value;
+		document.getElementById('character.skills[' + i + '].value').tn = character.skills[i].tn;
+	}
+}
+
+function ResetDicePools() {
+	for(i=0; i < character.dicepools.length; i++) {
+		if(Object.is(character.dicepools[i], character.skills.karma)) {
+			character.dicepools[i].current = character.dicepools[i].maximum;
+		}
+	}
+}
+
+function AddNewSkillRow(name, value) {
+	character.skills.push( { name : '', value : 0 } );
+	AddBlankSkillRow();
+}
+
+function importCharacter() {
+	upload.click();
+}
+
+function exportCharacter() {
+	var blob = new Blob([JSON.stringify(character)], { type: 'text/plain; charset=utf-8'});
+	download.setAttribute('href', URL.createObjectURL(blob));
+	download.setAttribute('download', 'character.txt');
+	download.click();
+}

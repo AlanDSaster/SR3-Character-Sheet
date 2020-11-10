@@ -30,7 +30,7 @@
 
 		<button class='collapsible'>Menu</button>
 		<div class='content'>
-			<button style='width: 50%;' onclick='character.export();'>Export</button><button style='width: 50%;' onclick='character.import();'>Import</button></td></tr>
+			<button style='width: 50%;' onclick='exportCharacter();'>Export</button><button style='width: 50%;' onclick='importCharacter();'>Import</button></td></tr>
 		</div>
 
 
@@ -43,8 +43,8 @@
 		<div class='content'>
 			<table>
 				<tbody>
-					<tr><td>Name</td><td><input id='character.bio.name' onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Race</td><td><select id='character.bio.race' onchange='character.UpdateAttribute(this.id, this.value);' >
+					<tr><td>Name</td><td><input id='character.bio.name' onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Race</td><td><select id='character.bio.race' onchange='UpdateAttribute(this.id, this.value);' >
 						<option value=''>Choose</option>
 						<option value='human'>Human</option>
 						<option value='elf'>Elf</option>
@@ -68,18 +68,18 @@
 					<tr><th>attribute</th><th>value</th></tr>
 				</thead>
 				<tbody>
-					<tr><td>Body</td><td><input id="character.attributes.body" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Quickness</td><td><input id="character.attributes.quickness" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Strength</td><td><input id="character.attributes.strength" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Intelligence</td><td><input id="character.attributes.intelligence" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Willpower</td><td><input id="character.attributes.willpower" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Charisma</td><td><input id="character.attributes.charisma" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Body</td><td><input id="character.attributes.body" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Quickness</td><td><input id="character.attributes.quickness" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Strength</td><td><input id="character.attributes.strength" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Intelligence</td><td><input id="character.attributes.intelligence" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Willpower</td><td><input id="character.attributes.willpower" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Charisma</td><td><input id="character.attributes.charisma" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 
 					<tr><td colspan=2><hr></td></tr>
 
 					<tr><td>Essence</td><td><input id="character.attributes.essence" readonly type=number value=0 /></td></tr>
-					<tr><td>Reaction</td><td><input id="character.attributes.reaction" readonly type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Magic</td><td><input id="character.attributes.magic" readonly type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Reaction</td><td><input id="character.attributes.reaction" readonly type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Magic</td><td><input id="character.attributes.magic" readonly type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 				</tbody>
 				<tfoot>
 				</tfoot>
@@ -110,7 +110,7 @@
 							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=9 />
 							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=10 style='border-radius: 15px;' />
 						</td>
-						<td style='border-right: 1px solid gray;'>
+						<td>
 							<button class="damageBtn" value=1 name='stun' onclick='takeDamage(this.name, this.value);'>L</button>
 							<button class="damageBtn" value=3 name='stun' onclick='takeDamage(this.name, this.value);'>M</button>
 							<button class="damageBtn" value=6 name='stun' onclick='takeDamage(this.name, this.value);'>S</button>
@@ -130,18 +130,18 @@
 							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=9 />
 							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=10 style='border-radius: 15px;' />
 						</td>
-						<td style='border-right: 1px solid gray;'>
+						<td>
 							<button class="damageBtn" value=1 name='physical' onclick='takeDamage(this.name, this.value);'>L</button>
 							<button class="damageBtn" value=3 name='physical' onclick='takeDamage(this.name, this.value);'>M</button>
 							<button class="damageBtn" value=6 name='physical' onclick='takeDamage(this.name, this.value);'>S</button>
 							<button class="damageBtn" value=10 name='physical' onclick='takeDamage(this.name, this.value);'>D</button>
 						</td>
 					</tr>
-					<tr><td colspan=2><b>DEBUGGING</b></td></tr>
-					<tr><td>Stun</td><td><input id="character.condition.stun" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Physical</td><td><input id="character.condition.physical" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Overflow</td><td><input id="character.condition.overflow" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Penalties</td><td><input id="character.condition.penalties" type=number value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td colspan=3><hr></td></tr>
+					<tr><td>Stun</td><td><input id="character.condition.stun" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Physical</td><td><input id="character.condition.physical" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Overflow</td><td><input id="character.condition.overflow" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Penalties</td><td><input id="character.condition.penalties" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 				</tbody>
 			</table>
 		</div>
@@ -157,15 +157,15 @@
 					<tr><th>dice pool</th><th>current</th><th>maximum</th></tr>
 				</thead>
 				<tbody>
-					<tr><td>karma</td><td><input id="character.dicepools.karma.current" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.karma.maximum" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>combat</td><td><input id="character.dicepools.combat.current" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.combat.maximum" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>control</td><td><input id="character.dicepools.control.current" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.control.maximum" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>hacking</td><td><input id="character.dicepools.hacking.current" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.hacking.maximum" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>spell</td><td><input id="character.dicepools.spell.current" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.spell.maximum" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>astral</td><td><input id="character.dicepools.astral.current" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.astral.maximum" value=0 onchange='character.UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>karma</td><td><input id="character.dicepools.karma.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.karma.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>combat</td><td><input id="character.dicepools.combat.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.combat.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>control</td><td><input id="character.dicepools.control.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.control.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>hacking</td><td><input id="character.dicepools.hacking.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.hacking.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>spell</td><td><input id="character.dicepools.spell.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.spell.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>astral</td><td><input id="character.dicepools.astral.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.astral.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 				</tbody>
 				<tfoot>
-					<tr><td><button onclick='ResetDicePools();'>Reset Dice Pools</button></td><td><button>Reset Karma Pool</button></td></tr>
+					<tr><td colspan=3><button onclick='ResetDicePools();'>Reset Dice Pools</button><button>Reset Karma Pool</button></td></tr>
 				</tfoot>
 			</table>
 		</div>
@@ -185,7 +185,7 @@
 				</tbody>
 
 				<tfoot>
-					<tr><td><button onclick='character.AddNewSkillRow();'>Add Skill</button></td></tr>
+					<tr><td><button onclick='AddNewSkillRow();'>Add Skill</button></td></tr>
 				</tfoot>
 			</table>
 		</div>
