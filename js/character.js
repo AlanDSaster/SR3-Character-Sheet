@@ -20,9 +20,7 @@ $(document).ready(
 				let reader = new FileReader();
 
 				reader.onload = function() {
-					console.log('before load: \n' + JSON.stringify(character));
 					character = JSON.parse(reader.result);
-					console.log('after load: \n' + JSON.stringify(character));
 					UpdateForm();
 				}
 				reader.readAsText(file);
@@ -240,7 +238,7 @@ function AddBlankSkillRow() {
 	content.innerHTML = 'Open';
 	content.style.height = '25px';
 	content.style.width = '55px';
-	content.setAttribute('onclick', 'RollOpen(this.id + ".name", this.id + ".value");');
+	content.setAttribute('onclick', 'RollOpen(character.skills[' + parseInt(rows.length - 1) + '].name, character.skills[' + parseInt(rows.length - 1) + '].value);');
 
 	td = document.createElement('td');
 	row.appendChild(td);
@@ -250,7 +248,7 @@ function AddBlankSkillRow() {
 	content.innerHTML = 'VsTN';
 	content.style.height = '25px';
 	content.style.width = '55px';
-	content.setAttribute('onclick', 'RollVsTN(this.id + ".name", this.id + ".value", this.id + ".tn");');
+	content.setAttribute('onclick', 'RollVsTN(character.skills[' + parseInt(rows.length - 1) + '].name, character.skills[' + parseInt(rows.length - 1) + '].value, character.skills[' + parseInt(rows.length - 1) + '].tn);');
 
 	td = document.createElement('td');
 	row.appendChild(td);
