@@ -14,6 +14,19 @@ $(function() {
 	initalizeConditionMonitor();
 });
 
+
+
+function UpdateDivSizeToContents(id) {
+	var div = document.getElementById(id);
+	if (div.style.maxHeight){
+		div.style.maxHeight = div.scrollHeight + "px";
+	} else {
+		div.style.maxHeight = null;
+	}
+}
+
+
+
 function initalizeConditionMonitor() {
   var cbs;
   cbs = document.querySelectorAll('input[type="checkbox"][name="stunDamage"]');
@@ -24,4 +37,21 @@ function initalizeConditionMonitor() {
   for(i=0; i < cbs.length; i++) {
     cbs[i].innerText = cbs[i].value;
   }
+}
+
+
+
+function ReloadCSS() {
+	/*
+		Code taken from:
+			https://stackoverflow.com/questions/2024486/is-there-an-easy-way-to-reload-css-without-reloading-the-page
+	*/
+
+	var links = document.getElementsByTagName("link");
+	for (var cl in links) {
+	  var link = links[cl];
+	  if (link.rel === "stylesheet") {
+      link.href += "";
+		}
+	}
 }

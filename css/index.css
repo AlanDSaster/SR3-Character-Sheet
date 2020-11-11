@@ -19,6 +19,10 @@ th {
   visibility: hidden;
 }
 
+.btn {
+	width: 55px;
+	height: 25px;
+}
 /*****
 ** Collapsibles
 *****/

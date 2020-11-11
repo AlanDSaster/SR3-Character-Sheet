@@ -176,18 +176,18 @@
 
 
 
-		<button class="collapsible">Skills</button>
-		<div class='content'>
+		<button class='collapsible'>Skills</button>
+		<div id='skills_div' class='content'>
 			<table id='skills_table'>
 				<thead>
-					<tr><th>Skill</th><th>Level</th><th colspan=2>Roll Dice</th><th>TN</th></tr>
+					<tr><th>Skill</th><th>Level</th><th colspan=2>Roll Dice</th><th>TN</th><th>TN Mod</th><th>Pool</th><th>#</th><th>Comp.</th><th>Bonus</th></tr>
 				</thead>
 
 				<tbody>
 				</tbody>
 
 				<tfoot>
-					<tr><td><button onclick='AddNewSkillRow();'>Add Skill</button></td></tr>
+					<tr><td colspan=500><button class='btn' onclick='AddNewSkillRow();'>Add</button><button class='btn' onclick='ToggleDeleteButtonVisibility();'>Delete</button></tr>
 				</tfoot>
 			</table>
 		</div>

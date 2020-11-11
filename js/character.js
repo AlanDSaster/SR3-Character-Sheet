@@ -1,10 +1,12 @@
 var character;
 var download;
 var upload;
+var deletebuttondisplay;
 
 $(document).ready(
 	function() {
 
+		 deletebuttondisplay = 'none'
 
 
 		//import/export links
@@ -53,7 +55,8 @@ $(document).ready(
 			condition : {
 				stun : 0,
 				physical : 0,
-				overflow : 0
+				overflow : 0,
+				penalties : 0
 			},
 
 			dicepools : {
@@ -87,7 +90,12 @@ $(document).ready(
 				{
 					name : '',
 					value : 0,
-					tn : 4
+					tn : 4,
+					tn_modifier : 0,
+					dicepool : 0,
+					dicepool_touse : 0,
+					complementarydice_touse : 0,
+					bonusdice_touse : 0
 				}
 			]
 
@@ -182,6 +190,9 @@ function LoadSkills() {
 
 	var table = document.getElementById("skills_table");
 	var tbody = table.tBodies[0];
+	table.removeChild(tbody);
+	tbody = document.createElement('tbody');
+	table.appendChild(tbody);
 	var rows = tbody.rows;
 
 	while(rows.length < character.skills.length) {
@@ -215,13 +226,16 @@ function AddBlankSkillRow() {
 	row = document.createElement('tr');
 	tbody.appendChild(row);
 
+	//skill name text input
 	td = document.createElement('td');
 	row.appendChild(td);
 	content = document.createElement('input');
 	td.appendChild(content);
 	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].name');
+	content.setAttribute('type', 'text');
 	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
 
+	//skill value number input
 	td = document.createElement('td');
 	row.appendChild(td);
 	content = document.createElement('input');
@@ -230,6 +244,7 @@ function AddBlankSkillRow() {
 	content.setAttribute('type', 'number');
 	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
 
+	//open roll button
 	td = document.createElement('td');
 	row.appendChild(td);
 	content = document.createElement('button');
@@ -240,6 +255,7 @@ function AddBlankSkillRow() {
 	content.style.width = '55px';
 	content.setAttribute('onclick', 'RollOpen(character.skills[' + parseInt(rows.length - 1) + '].name, character.skills[' + parseInt(rows.length - 1) + '].value);');
 
+	//tn roll button
 	td = document.createElement('td');
 	row.appendChild(td);
 	content = document.createElement('button');
@@ -250,15 +266,88 @@ function AddBlankSkillRow() {
 	content.style.width = '55px';
 	content.setAttribute('onclick', 'RollVsTN(character.skills[' + parseInt(rows.length - 1) + '].name, character.skills[' + parseInt(rows.length - 1) + '].value, character.skills[' + parseInt(rows.length - 1) + '].tn);');
 
+	//target number input
 	td = document.createElement('td');
 	row.appendChild(td);
 	content = document.createElement('input');
 	td.appendChild(content);
-	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].TN');
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].tn');
 	content.setAttribute('type', 'number');
 	content.value = 4;
 	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
 
+	//TN modifier number input
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].tn_modifier');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//dice pool dropdown selector
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].dicepool');
+	content.value = 'none';
+	content.setAttribute('type', 'text');
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//number of dice to use from selected dice pool
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].dicepool_touse');
+	content.setAttribute('type', 'number');
+	content.value = 4;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//number of complementary dice to roll
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].complementarydice_touse');
+	content.setAttribute('type', 'number');
+	content.value = 4;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//number of complementary dice to roll
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].bonusdice_touse');
+	content.setAttribute('type', 'number');
+	content.value = 4;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+
+
+
+
+	//debug buttons
+	//delete skill button (hidden)
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('button');
+	td.appendChild(content);
+	content.setAttribute('id', 'DeleteSkill(' + parseInt(rows.length-1) + ')');
+	content.innerHTML = 'Delete';
+	content.classList.add('DeleteButton');
+	content.style.display = deletebuttondisplay;
+	content.style.height = '25px';
+	content.style.width = '55px';
+	content.setAttribute('onclick', 'DeleteSkill(' + parseInt(rows.length - 1) + ');');
+
+
+
+	//update the div size to contain contents
+	UpdateDivSizeToContents('skills_div');
 }
 
 function UpdateSkillsForm() {
@@ -279,6 +368,11 @@ function UpdateSkillsForm() {
 		document.getElementById('character.skills[' + i + '].name').value = character.skills[i].name;
 		document.getElementById('character.skills[' + i + '].value').value = character.skills[i].value;
 		document.getElementById('character.skills[' + i + '].value').tn = character.skills[i].tn;
+		document.getElementById('character.skills[' + i + '].value').tn_modifier = character.skills[i].tn_modifier;
+		document.getElementById('character.skills[' + i + '].value').dicepool = character.skills[i].dicepool;
+		document.getElementById('character.skills[' + i + '].value').dicepool_touse = character.skills[i].dicepool_touse;
+		document.getElementById('character.skills[' + i + '].value').complementarydice_touse = character.skills[i].complementarydice_touse;
+		document.getElementById('character.skills[' + i + '].value').bonusdice_touse = character.skills[i].bonusdice_touse;
 	}
 }
 
@@ -324,21 +418,77 @@ const CopyToClipboard = str => {
 	SnackbarNotification('Copied text to clipboard');
 };
 
-function RollOpen(skill, dice) {
+function RollOpen(skill, skilldice, pool, pooldice, complementarydice, bonusdice) {
 	console.log('rolling open');
 	console.log('skill: ' + skill);
-	console.log('dice: ' + dice);
+	console.log('dice: ' + skilldice);
+	console.log('pool: ' + pool);
+	console.log('pooldice: ' + pooldice);
+	console.log('complementarydice: ' + complementarydice);
+	console.log('bonusdice: ' + bonusdice);
+
 	//&{template:default} {{name=Open Skill Test}} {{attack=[[5d6kh1!!]]}} {{Damage=[[6]]S}}
-	var text = '&{template:default} {{name=Open Skill Test}} {{' + skill + '=[[' + dice + 'd6kh1!!]] }}';
+	var text =  '&{template:default}'
+						+ '{{name=Open Skill Test}}'
+						+ '{{' + skill + '=[[' + skilldice + 'd6kh1!!]] }}'
+						+ '{{' + pool + '=[[' + pooldice + ']]}}'
+						+ '{{' + 'complementary' + '=[[' + complementarydice + ']]}}'
+						+ '{{' + 'bonus' + '=[[' + bonusdice + ']]}}';
 	CopyToClipboard(text);
 }
 
-function RollVsTN(skill, dice, tn) {
+function RollVsTN(skill, skilldice, tn, pool, pooldice, complementarydice, bonusdice) {
 	console.log('rolling vs TN');
-	console.log('skill: ' + skill);
-	console.log('dice: ' + dice);
+	console.log('dice: ' + skilldice);
 	console.log('tn: ' + tn);
+	console.log('pool: ' + pool);
+	console.log('pooldice: ' + pooldice);
+	console.log('complementarydice: ' + complementarydice);
+	console.log('bonusdice: ' + bonusdice);
+
 	//&{template:default} {{name=Pistols (Open)}} {{attack=[[5d6kh1!!]]}} {{Damage=[[6]]S}}
-	var text = '&{template:default} {{name=Skill Test}} {{' + skill + '=[[' + dice + 'd6>' + tn + '!!]] }}';
+	var text =  '&{template:default}'
+						+ '{{name=TN Skill Test}}'
+						+ '{{' + 'TN' + '=[[' + tn + ']]}}'
+						+ '{{' + skill + '=[[' + skilldice + 'd6kh1!!]] }}'
+						+ '{{' + pool + '=[[' + pooldice + ']]}}'
+						+ '{{' + 'complementary' + '=[[' + complementarydice + ']]}}'
+						+ '{{' + 'bonus' + '=[[' + bonusdice + ']]}}';
 	CopyToClipboard(text);
+}
+
+function DeleteSkill(row_index) {
+	if(PromptYesNo()) {
+		//document.getElementById('skills_table').tBodies[0].deleteRow(row_index);
+		character.skills.splice(row_index, 1);
+		LoadSkills();
+	}
+}
+
+function PromptYesNo() {
+	if(confirm('Please confirm action')) {
+	  return true;
+	} else {
+	  return false;
+	}
+}
+
+function ToggleDeleteButtonVisibility() {
+	var buttons = document.getElementsByClassName('DeleteButton');
+	var button;
+	var i;
+
+	if(deletebuttondisplay == 'none') {
+		deletebuttondisplay = 'block';
+	} else {
+		deletebuttondisplay = 'none';
+	}
+
+	for(i = 0; i < buttons.length; i++) {
+
+		button = buttons[i];
+
+		button.style.display = deletebuttondisplay;
+
+	}
 }
