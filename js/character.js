@@ -6,8 +6,9 @@ var deletebuttondisplay;
 $(document).ready(
 	function() {
 
-		 deletebuttondisplay = 'none'
+		SnackbarNotification('Designed for use in Mozilla Firefox');
 
+		deletebuttondisplay = 'none'
 
 		//import/export links
 		download = document.getElementById('exportlink');
@@ -29,6 +30,7 @@ $(document).ready(
 			}
 		);
 
+		InitializeConditionMonitor();
 
 		//set up character object
 		character = {
@@ -134,7 +136,7 @@ function UpdateForm() {
 	document.getElementById('character.condition.penalties').value = character.condition.penalties ;
 
 
-	updateConditionMonitor();
+	UpdateConditionMonitor();
 
 	//update dice pools
 	UpdateDicePools();
@@ -337,11 +339,12 @@ function AddBlankSkillRow() {
 	content = document.createElement('button');
 	td.appendChild(content);
 	content.setAttribute('id', 'DeleteSkill(' + parseInt(rows.length-1) + ')');
-	content.innerHTML = 'Delete';
+	content.innerHTML = 'X';
+	content.style.textAlign = 'center';
 	content.classList.add('DeleteButton');
 	content.style.display = deletebuttondisplay;
 	content.style.height = '25px';
-	content.style.width = '55px';
+	content.style.width = '35px';
 	content.setAttribute('onclick', 'DeleteSkill(' + parseInt(rows.length - 1) + ');');
 
 
@@ -491,4 +494,161 @@ function ToggleDeleteButtonVisibility() {
 		button.style.display = deletebuttondisplay;
 
 	}
+}
+
+
+function DamageTrackClicked(amount, type) {
+
+	var track;
+	var current;
+	var total = 0;
+	console.log(type);
+	switch(type) {
+		case 'stun':
+			track = document.getElementsByName('stunDamage');
+			current = parseInt(character.condition.stun);
+			break;
+		case 'physical':
+			track = document.getElementsByName('physicalDamage');
+			current = parseInt(character.condition.physical);
+			break;
+	}
+
+	console.log(new String(amount).valueOf());
+	console.log(new String(current).valueOf());
+	if(new String(amount).valueOf() == new String(current).valueOf() ) {
+		amount = parseInt(amount) - 1;
+	}
+
+	console.log('entering: SetDamage(' + amount + ', ' + type + ')');
+	SetDamage(amount, type);
+
+}
+
+function SetDamage(amount, type) {
+	amount = parseInt(amount);
+	var track;
+
+	switch(type) {
+		case 'stun':
+			track = document.getElementsByName('stunDamage');
+			character.condition.stun = amount;
+			break;
+		case 'physical':
+			track = document.getElementsByName('physicalDamage');
+			character.condition.physical = amount;
+			break;
+	}
+
+	CalculateConditionPenalties();
+}
+
+function AddDamage(amount, type) {
+	amount = parseInt(amount);
+
+	switch(type) {
+		case 'stun':
+			character.condition.stun = parseInt(character.condition.stun) + amount;
+			break;
+		case 'physical':
+			character.condition.physical = parseInt(character.condition.physical) + amount;
+			break;
+	}
+
+	if(character.condition.stun > 10) {
+		character.condition.physical = parseInt(character.condition.stun) + parseInt(character.condition.physical) - 10;
+		character.condition.stun = 10;
+	}
+
+	if(character.condition.physical > 10) {
+		character.condition.overflow = parseInt(character.condition.overflow) + parseInt(character.condition.physical) - 10;
+		character.condition.physical = 10;
+	}
+
+	CalculateConditionPenalties(character.condition.stun, character.condition.physical);
+}
+
+function CalculateConditionPenalties() {
+
+	stun = parseInt(character.condition.stun);
+	physical = parseInt(character.condition.physical);
+	var stun_penalty = 0;
+	var physical_penalty = 0;
+
+	//stun
+	if(stun > 1) {
+		stun_penalty = stun_penalty + 1;
+	}
+	if(stun > 3) {
+		stun_penalty = stun_penalty + 1;
+	}
+	if(stun > 6) {
+		stun_penalty = stun_penalty + 1;
+	}
+
+	//physical
+	if(physical > 1) {
+		physical_penalty = physical_penalty + 1;
+	}
+	if(physical > 3) {
+		physical_penalty = physical_penalty + 1;
+	}
+	if(physical > 6) {
+		physical_penalty = physical_penalty + 1;
+	}
+
+	character.condition.stunpenalty = stun_penalty;
+	character.condition.physicalpenalty = physical_penalty;
+	character.condition.penalties = stun_penalty + physical_penalty;
+
+	UpdateConditionMonitor();
+}
+
+function UpdateDamageTrack(amount, type) {
+
+	amount = parseInt(amount);
+	var track;
+
+	switch(type) {
+		case 'stun':
+			track = document.getElementsByName('stunDamage');
+			break;
+		case 'physical':
+			track = document.getElementsByName('physicalDamage');
+			break;
+
+	}
+
+	for(i = 0; i < track.length; i++) {
+		if(i < amount) {
+			track[i].checked = true;
+		} else {
+			track[i].checked = false;
+		}
+	}
+}
+
+function InitializeConditionMonitor() {
+
+	var track;
+
+	track = document.getElementsByName('stunDamage');
+	for(i=0; i < track.length; i++) {
+		track[i].innerText = track[i].value;
+	}
+
+	track = document.getElementsByName('physicalDamage');
+	for(i=0; i < track.length; i++) {
+		track[i].innerText = track[i].value;
+	}
+
+}
+
+function UpdateConditionMonitor() {
+	UpdateDamageTrack(character.condition.stun, 'stun');
+	UpdateDamageTrack(character.condition.physical, 'physical');
+	document.getElementById('character.condition.overflow').value = character.condition.overflow;
+	document.getElementById('character.condition.stunpenalty').value = character.condition.stunpenalty;
+	document.getElementById('character.condition.physicalpenalty').value = character.condition.physicalpenalty;
+	document.getElementById('character.condition.penalties').value = character.condition.penalties;
 }

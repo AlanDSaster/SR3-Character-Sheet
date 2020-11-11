@@ -101,48 +101,50 @@
 				<tbody>
 					<tr><th>Stun</th>
 						<td>
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=1 style='border-radius: 15px;' />
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=2 />
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=3 style='border-radius: 15px;' />
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=4 />
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=5 />
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=6 style='border-radius: 15px;' />
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=7 />
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=8 />
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=9 />
-							<input type=checkbox name=stunDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=10 style='border-radius: 15px;' />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=1 style='border-radius: 15px;' />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=2 />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=3 style='border-radius: 15px;' />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=4 />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=5 />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=6 style='border-radius: 15px;' />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=7 />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=8 />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=9 />
+							<input type=checkbox name=stunDamage onchange='DamageTrackClicked(this.value, "stun");' value=10 style='border-radius: 15px;' />
 						</td>
 						<td>
-							<button class="damageBtn" value=1 name='stun' onclick='takeDamage(this.name, this.value);'>L</button>
-							<button class="damageBtn" value=3 name='stun' onclick='takeDamage(this.name, this.value);'>M</button>
-							<button class="damageBtn" value=6 name='stun' onclick='takeDamage(this.name, this.value);'>S</button>
-							<button class="damageBtn" value=10 name='stun' onclick='takeDamage(this.name, this.value);'>D</button>
+							<button class="damageBtn" value=1 name='stun' onclick='AddDamage(this.value, "stun");'>L</button>
+							<button class="damageBtn" value=3 name='stun' onclick='AddDamage(this.value, "stun");'>M</button>
+							<button class="damageBtn" value=6 name='stun' onclick='AddDamage(this.value, "stun");'>S</button>
+							<button class="damageBtn" value=10 name='stun' onclick='AddDamage(this.value, "stun");'>D</button>
 						</td>
 					</tr>
 					<tr><th>Physical</th>
 						<td>
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=1 style='border-radius: 15px;' />
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=2 />
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=3 style='border-radius: 15px;' />
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=4 />
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=5 />
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=6 style='border-radius: 15px;' />
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=7 />
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=8 />
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=9 />
-							<input type=checkbox name=physicalDamage onchange='updateDamageTrack(this); updateCharacterDamage(); updateConditionMonitor();' value=10 style='border-radius: 15px;' />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=1 style='border-radius: 15px;' />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=2 />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=3 style='border-radius: 15px;' />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=4 />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=5 />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=6 style='border-radius: 15px;' />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=7 />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=8 />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=9 />
+							<input type=checkbox name=physicalDamage onchange='DamageTrackClicked(this.value, "physical");;' value=10 style='border-radius: 15px;' />
 						</td>
 						<td>
-							<button class="damageBtn" value=1 name='physical' onclick='takeDamage(this.name, this.value);'>L</button>
-							<button class="damageBtn" value=3 name='physical' onclick='takeDamage(this.name, this.value);'>M</button>
-							<button class="damageBtn" value=6 name='physical' onclick='takeDamage(this.name, this.value);'>S</button>
-							<button class="damageBtn" value=10 name='physical' onclick='takeDamage(this.name, this.value);'>D</button>
+							<button class="damageBtn" value=1 name='physical' onclick='AddDamage(this.value, "physical");'>L</button>
+							<button class="damageBtn" value=3 name='physical' onclick='AddDamage(this.value, "physical");'>M</button>
+							<button class="damageBtn" value=6 name='physical' onclick='AddDamage(this.value, "physical");'>S</button>
+							<button class="damageBtn" value=10 name='physical' onclick='AddDamage(this.value, "physical");'>D</button>
 						</td>
 					</tr>
 					<tr><td colspan=3><hr></td></tr>
 					<tr><td>Stun</td><td><input id="character.condition.stun" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 					<tr><td>Physical</td><td><input id="character.condition.physical" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 					<tr><td>Overflow</td><td><input id="character.condition.overflow" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Stun Penalty</td><td><input id="character.condition.stunpenalty" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Physical Penalty</td><td><input id="character.condition.physicalpenalty" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 					<tr><td>Penalties</td><td><input id="character.condition.penalties" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 				</tbody>
 			</table>
