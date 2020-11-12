@@ -17,7 +17,6 @@
 		<script type="text/javascript" src="js/character.js"></script>
 		<script type="text/javascript" src="js/userinputoverlay.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
-		<script type="text/javascript" src="js/conditionmonitor.js"></script>
 		<script type="text/javascript" src="js/snackbar.js"></script>
 
 	</head>
@@ -140,12 +139,13 @@
 						</td>
 					</tr>
 					<tr><td colspan=3><hr></td></tr>
-					<tr><td>Stun</td><td><input id="character.condition.stun" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Physical</td><td><input id="character.condition.physical" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Overflow</td><td><input id="character.condition.overflow" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Stun Penalty</td><td><input id="character.condition.stunpenalty" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Physical Penalty</td><td><input id="character.condition.physicalpenalty" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Penalties</td><td><input id="character.condition.penalties" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Stun</td><td><input id="character.condition.stun" type=number min=0 max=10 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Physical</td><td><input id="character.condition.physical" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Overflow</td><td><input id="character.condition.overflow" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Max Overflow</td><td><input id="character.condition.maxoverflow" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Stun Penalty</td><td><input id="character.condition.stunpenalty" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Physical Penalty</td><td><input id="character.condition.physicalpenalty" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Penalties</td><td><input id="character.condition.penalties" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 				</tbody>
 			</table>
 		</div>
@@ -234,5 +234,10 @@
 		<div id='snackbar'>
 		</div>
 
+		<div id='deathdiv'>
+			<h1>YOU ARE DEAD</h1>
+			<h4>Export final character sheet?</h4>
+			<button onclick='exportCharacter();'>Export</button>
+		</div>
 	</body>
 </html>

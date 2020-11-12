@@ -42,12 +42,12 @@ $(document).ready(
 			},
 
 			attributes : {
-				body 					: 0,
-				quickness 		: 0,
-				strength 			: 0,
-				intelligence	: 0,
-				willpower 		: 0,
-				charisma 			: 0,
+				body 					: 1,
+				quickness 		: 1,
+				strength 			: 1,
+				intelligence	: 1,
+				willpower 		: 1,
+				charisma 			: 1,
 
 				magic : 0,
 				reaction : 0,
@@ -58,6 +58,7 @@ $(document).ready(
 				stun : 0,
 				physical : 0,
 				overflow : 0,
+				maxoverflow : 1,
 				penalties : 0
 			},
 
@@ -99,7 +100,23 @@ $(document).ready(
 					complementarydice_touse : 0,
 					bonusdice_touse : 0
 				}
-			]
+			],
+
+			edges_and_flaws : {
+
+				skill_aptitutde : {
+					name : 'Aptitude',
+					skill : '',
+					level : 0,
+					maximum : 1
+				},
+
+				will_to_live : {
+					name : 'will_to_live',
+					level : 0,
+					maximum : 3
+				}
+			}
 
 		}; //end of character
 
@@ -107,6 +124,9 @@ $(document).ready(
 	}	//end of $(document).ready
 );	//end of $(document).ready
 
+function CalculateCharacterStats() {
+	console.log('CalculateCharacterStats() under construction')
+}
 
 function UpdateForm() {
 
@@ -133,6 +153,7 @@ function UpdateForm() {
 	document.getElementById('character.condition.stun').value = character.condition.stun ;
 	document.getElementById('character.condition.physical').value = character.condition.physical ;
 	document.getElementById('character.condition.overflow').value = character.condition.overflow ;
+	document.getElementById('character.condition.maxoverflow').value = character.condition.maxoverflow ;
 	document.getElementById('character.condition.penalties').value = character.condition.penalties ;
 
 
@@ -164,6 +185,25 @@ function UpdateCharacter() {
 
 	//transfer calculated character attributes to form elements
 
+}
+
+function DeathAnimation() {
+	var div = document.getElementById('deathdiv');
+	unfade(div);
+}
+
+function unfade(element) {
+    var op = 0.1;  // initial opacity
+    element.style.display = 'block';
+		element.style.visibility = 'visible';
+    var timer = setInterval(function () {
+        if (op >= 0.8){
+            clearInterval(timer);
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op += op * 0.025;
+    }, 10);
 }
 
 function UpdateDicePools() {
@@ -647,8 +687,15 @@ function InitializeConditionMonitor() {
 function UpdateConditionMonitor() {
 	UpdateDamageTrack(character.condition.stun, 'stun');
 	UpdateDamageTrack(character.condition.physical, 'physical');
+	document.getElementById('character.condition.stun').value = character.condition.stun;
+	document.getElementById('character.condition.physical').value = character.condition.physical;
 	document.getElementById('character.condition.overflow').value = character.condition.overflow;
 	document.getElementById('character.condition.stunpenalty').value = character.condition.stunpenalty;
 	document.getElementById('character.condition.physicalpenalty').value = character.condition.physicalpenalty;
 	document.getElementById('character.condition.penalties').value = character.condition.penalties;
+
+	character.condition.maxoverflow = parseInt(character.attributes.body) + parseInt(character.edges_and_flaws.will_to_live.level);
+	if(character.condition.overflow >= character.condition.maxoverflow) {
+		DeathAnimation();
+	}
 }
