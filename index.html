@@ -11,7 +11,8 @@
 		<link rel="stylesheet" href="css/index.css" />
 		<link rel="stylesheet" href="css/condition_monitor.css" />
 		<link rel="stylesheet" href="css/userinputoverlay.css" />
-		<link rel="stylesheet" href="css/snackbar.css" />
+		<link rel='stylesheet' href='css/snackbar.css' />
+		<link rel='stylesheet' href='css/tooltip.css' />
 
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/character.js"></script>
@@ -31,7 +32,16 @@
 
 		<button class='collapsible'>Menu</button>
 		<div class='content'>
-			<button style='width: 50%;' onclick='exportCharacter();'>Export</button><button style='width: 50%;' onclick='importCharacter();'>Import</button></td></tr>
+			<div>
+				<button style='width: 50%;' onclick='exportCharacter();'>Export</button><button style='width: 50%;' onclick='importCharacter();'>Import</button></td></tr>
+			</div>
+			<hr>
+			<div>
+				<button style='width: 100%;' onclick='ExpandAllCollapsibles();'>Expand All</button>
+			</div>
+			<div>
+				<button style='width: 100%;' onclick='CollapseAllCollapsibles();'>Collapse All</button>
+			</div>
 		</div>
 
 
@@ -158,18 +168,18 @@
 		<div class='content'>
 			<table id='dicepools_table'>
 				<thead>
-					<tr><th>dice pool</th><th>current</th><th>maximum</th></tr>
+					<tr><th>pool</th><th>current / maximum</th></tr>
 				</thead>
 				<tbody>
-					<tr><td>Karma</td><td><input id="character.dicepools.karma.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.karma.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Combat</td><td><input id="character.dicepools.combat.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.combat.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Control</td><td><input id="character.dicepools.control.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.control.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Hacking</td><td><input id="character.dicepools.hacking.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.hacking.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Spell</td><td><input id="character.dicepools.spell.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.spell.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Astral</td><td><input id="character.dicepools.astral.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td><input id="character.dicepools.astral.maximum" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Karma</td><td><input id="character.dicepools.karma.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /> / <input id="character.dicepools.karma.maximum" type=number readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td></td></tr>
+					<tr><td>Combat</td><td><input id="character.dicepools.combat.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /> / <input id="character.dicepools.combat.maximum" type=number readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td></td></tr>
+					<tr><td>Control</td><td><input id="character.dicepools.control.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /> / <input id="character.dicepools.control.maximum" type=number readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td></td></tr>
+					<tr><td>Hacking</td><td><input id="character.dicepools.hacking.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /> / <input id="character.dicepools.hacking.maximum" type=number readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td></td></tr>
+					<tr><td>Spell</td><td><input id="character.dicepools.spell.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /> / <input id="character.dicepools.spell.maximum" type=number readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td></td></tr>
+					<tr><td>Astral</td><td><input id="character.dicepools.astral.current" type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /> / <input id="character.dicepools.astral.maximum" type=number readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td><td></td></tr>
 				</tbody>
 				<tfoot>
-					<tr><td colspan=5><button onclick='ResetDicePools();'>Reset Dice Pools</button><button onclick='ResetKarmaPool();'>Reset Karma Pool</button></td></tr>
+					<tr><td colspan=5><div class='tooltip'><button onclick='ResetDicePools();'>Reset Dice Pools</button><span class='tooltiptext'>Resets all dice pools except for the Karma pool which only resets at the GM's discretion.</span></div><div class='tooltip'><button onclick='ResetKarmaPool();'>Reset Karma Pool</button><span class='tooltiptext'>Resets the Karma Dice Pool to its maximum.</span></div></td></tr>
 				</tfoot>
 			</table>
 		</div>
@@ -182,7 +192,7 @@
 		<div id='skills_div' class='content'>
 			<table id='skills_table'>
 				<thead>
-					<tr><th>Skill</th><th>Level</th><th colspan=2>Roll Dice</th><th>TN</th><th>TN Mod</th><th>Pool</th><th>#</th><th>Comp.</th><th>Bonus</th></tr>
+					<tr><th>Skill</th><th>Level</th><th colspan=2>Roll</th><th>TN</th><th><div class='tooltip'>Mod<span class='tooltiptext'>Additional Target Number modifiers such as Aptitude/Incompetence</span></div></th><th>Pool</th><th>#</th><th>Comp.</th><th>Bonus</th></tr>
 				</thead>
 
 				<tbody>
@@ -198,9 +208,54 @@
 
 
 
-		<button class="collapsible">Special Rolls</button>
+		<button class='collapsible'>Special Rolls</button>
 		<div class='content'>
 			under construction
+		</div>
+
+
+
+
+		<button class='collapsible'>Equipment</button>
+		<div class='content'>
+			<table id='deck_and_vcr_table'>
+				temporary VCR / Cyberdeck placement
+				<tbody>
+					<tr><td>Vehicle Control Rig</td><td><input type='number' value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Cyberdeck MPCP</td><td><input  type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+				</tbody>
+			</table>
+
+		</div>
+
+
+
+
+
+		<button class='collapsible'>Magic</button>
+		<div class='content'>
+			under construction
+		</div>
+
+		<button class='collapsible'>Cyberware</button>
+		<div class='content'>
+			under construction
+
+			<table id='cyberware_table'>
+				<thead>
+					<tr><th></th><th>value</th></tr>
+					<tr><td>Essence Penalty</th><th><input id='character.attributes.cyberwareessencepenalty' type=number value=0 onchange='UpdateAttribute(this.id, this.value);' /></th></tr>
+				</thead>
+
+				<tbody>
+
+				</tbody>
+
+				<tfoot>
+				</tfoot>
+			</table>
+
+
 		</div>
 
 		<button class='collapsible'>Karma</button>
@@ -230,6 +285,18 @@
 				</tfoot>
 			</table>
 		</div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 		<div id='snackbar'>
 		</div>

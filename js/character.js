@@ -51,7 +51,8 @@ $(document).ready(
 
 				magic : 0,
 				reaction : 0,
-				essence : 0
+				essence : 0,
+				cyberwareessencepenalty : 0
 			},
 
 			condition : {
@@ -59,6 +60,8 @@ $(document).ready(
 				physical : 0,
 				overflow : 0,
 				maxoverflow : 1,
+				stunpenalty : 0,
+				physicalpenalty : 0,
 				penalties : 0
 			},
 
@@ -116,6 +119,42 @@ $(document).ready(
 					level : 0,
 					maximum : 3
 				}
+			},
+
+			equipment : {
+				weapons : [
+					{
+						name : 'Yamaha Pulsar',
+						type : 'taser',
+
+						range : {
+							minimum : 0,
+							short : 5,
+							medium : 10,
+							long : 15,
+							extreme : 25
+						},
+
+						power : 9,
+						damage : 3,
+						legality : '5-P',
+
+						ammo : {
+							current : 15,
+							maximum : 15
+						},
+
+						weight : 3
+					}
+				],
+
+				cyberdeck : {
+					rating : 0
+				},
+
+				vehicle_control_rig : {
+					rating : 0,
+				}
 			}
 
 		}; //end of character
@@ -125,7 +164,68 @@ $(document).ready(
 );	//end of $(document).ready
 
 function CalculateCharacterStats() {
+
 	console.log('CalculateCharacterStats() under construction')
+
+	var x = 0;
+
+	character.attributes.quickness = parseInt(character.attributes.quickness);
+	character.attributes.body = parseInt(character.attributes.body);
+	character.attributes.strength = parseInt(character.attributes.strength);
+	character.attributes.intelligence = parseInt(character.attributes.intelligence);
+	character.attributes.charisma = parseInt(character.attributes.charisma);
+	character.attributes.willpower = parseInt(character.attributes.willpower);
+
+	//reaction
+	console.group('reaction calculation');
+	console.log('character.attributes.intelligence: ' + character.attributes.intelligence);
+	console.log('character.attributes.quickness: ' + character.attributes.quickness);
+	x = character.attributes.quickness + character.attributes.intelligence;
+	x = x/2;
+	x = Math.floor(x);
+	character.attributes.reaction = x;
+	console.log('character.attributes.reaction: ' + character.attributes.reaction);
+	console.groupEnd();
+
+	//essence = 6 - cyberwareessencepenalty
+	x = 6 - character.attributes.cyberwareessencepenalty;
+
+	//magic = floor(essence)
+	x = character.attributes.essence;
+	x = Math.floor(x);
+	character.attributes.magic = x;
+
+	//dice pools
+	//round all pools down.
+
+	//combat pool = (int + qui + wil) / 2
+	x = character.attributes.intelligence + character.attributes.intelligence + character.attributes.intelligence;
+	x = x / 2;
+	x = Math.floor(x);
+	character.dicepools.combat.maximum = x;
+
+	//control pool = Reaction + VCR Rating
+	x = character.attributes.reaction + character.equipment.vehicle_control_rig.rating;
+	character.dicepools.control.maximum = x;
+
+	//hacking pool = (Int + MPCP rating) / 3
+	x = character.attributes.intelligence + character.equipment.cyberdeck.rating;
+	x = Math.floor(x);
+	character.dicepools.hacking.maximum = x;
+
+	//spell pool = (int + wil + mag) / 3
+	x = character.attributes.intelligence + character.attributes.willpower + character.attributes.magic;
+	x = x/3;
+	x = Math.floor(x);
+	character.dicepools.spell.maximum = x;
+
+	//astral pool = (int + cha + wil) / 2
+	x = character.attributes.intelligence + character.attributes.charisma + character.attributes.willpower;
+	x = x/2;
+	x = Math.floor(x);
+	character.dicepools.astral.maximum = x;
+
+	UpdateForm();
 }
 
 function UpdateForm() {
@@ -148,6 +248,8 @@ function UpdateForm() {
 	document.getElementById('character.attributes.magic').value = character.attributes.magic ;
 	document.getElementById('character.attributes.reaction').value = character.attributes.reaction ;
 	document.getElementById('character.attributes.essence').value = character.attributes.essence ;
+	document.getElementById('character.attributes.cyberwareessencepenalty').value = character.attributes.cyberwareessencepenalty ;
+
 
 	//update condition
 	document.getElementById('character.condition.stun').value = character.condition.stun ;
@@ -225,7 +327,7 @@ function UpdateDicePools() {
 function UpdateAttribute(id, value) {
 	var statement = id + '="' + value + '"';
 	eval( statement );
-	UpdateForm();
+	CalculateCharacterStats();
 }
 
 function LoadSkills() {
@@ -399,7 +501,7 @@ function UpdateSkillsForm() {
 	var rows = tbody.rows;
 	var i;
 
-	if(rows.length == 0) {
+	while(rows.length < character.skills.length) {
 		if(character.skills.length > 0) {
 			AddBlankSkillRow();
 		} else {
@@ -425,12 +527,12 @@ function ResetDicePools() {
 	character.dicepools.hacking.current = character.dicepools.hacking.maximum;
 	character.dicepools.spell.current = character.dicepools.spell.maximum;
 	character.dicepools.astral.current = character.dicepools.astral.maximum;
-	UpdateForm();
+	CalculateCharacterStats();
 }
 
 function ResetKarmaPool() {
 	character.dicepools.karma.current = character.dicepools.karma.maximum;
-	UpdateForm();
+	CalculateCharacterStats();
 }
 
 function AddNewSkillRow(name, value) {
@@ -626,6 +728,8 @@ function CalculateConditionPenalties() {
 		stun_penalty = stun_penalty + 1;
 	}
 
+	character.condition.stunpenalty = stun_penalty;
+
 	//physical
 	if(physical > 1) {
 		physical_penalty = physical_penalty + 1;
@@ -636,6 +740,8 @@ function CalculateConditionPenalties() {
 	if(physical > 6) {
 		physical_penalty = physical_penalty + 1;
 	}
+
+	character.condition.physicalpenalty = physical_penalty;
 
 	character.condition.stunpenalty = stun_penalty;
 	character.condition.physicalpenalty = physical_penalty;

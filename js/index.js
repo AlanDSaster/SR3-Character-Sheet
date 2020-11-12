@@ -55,3 +55,19 @@ function ReloadCSS() {
 		}
 	}
 }
+
+function ExpandAllCollapsibles() {
+	var collapsibles = document.getElementsByClassName('content');
+
+	for(i = 0; i < collapsibles.length; i++) {
+		collapsibles[i].style.maxHeight = collapsibles[i].scrollHeight + 'px';
+	}
+}
+
+function CollapseAllCollapsibles() {
+	var collapsibles = document.getElementsByClassName('content');
+
+	for(i = 0; i < collapsibles.length; i++) {
+		collapsibles[i].style.maxHeight = null;
+	}
+}
