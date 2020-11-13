@@ -105,7 +105,7 @@
 		<div class="content">
 			<table class=ConditionMonitor>
 				<thead class=ConditionMonitor>
-					<tr><th>Type</th><th>Damage</th><th>Apply Damage</th></tr>
+					<tr><th>Type</th><th>Damage</th><th>Apply Damage</th><th>Penalty</th></tr>
 				</thead>
 				<tbody>
 					<tr><th>Stun</th>
@@ -127,6 +127,9 @@
 							<button class="damageBtn" value=6 name='stun' onclick='AddDamage(this.value, "stun");'>S</button>
 							<button class="damageBtn" value=10 name='stun' onclick='AddDamage(this.value, "stun");'>D</button>
 						</td>
+						<td>
+							<input id="character.condition.stunpenalty" type=number min=0 readonly value=0 onchange='UpdateAttribute(this.id, this.value);' />
+						</td>
 					</tr>
 					<tr><th>Physical</th>
 						<td>
@@ -147,15 +150,16 @@
 							<button class="damageBtn" value=6 name='physical' onclick='AddDamage(this.value, "physical");'>S</button>
 							<button class="damageBtn" value=10 name='physical' onclick='AddDamage(this.value, "physical");'>D</button>
 						</td>
+						<td>
+							<input id="character.condition.physicalpenalty" type=number min=0 readonly value=0 onchange='UpdateAttribute(this.id, this.value);' />
+						</td>
 					</tr>
 					<tr><td colspan=3><hr></td></tr>
-					<tr><td>Stun</td><td><input id="character.condition.stun" type=number min=0 max=10 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Physical</td><td><input id="character.condition.physical" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Overflow</td><td><input id="character.condition.overflow" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Max Overflow</td><td><input id="character.condition.maxoverflow" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Stun Penalty</td><td><input id="character.condition.stunpenalty" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Physical Penalty</td><td><input id="character.condition.physicalpenalty" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
-					<tr><td>Penalties</td><td><input id="character.condition.penalties" type=number min=0 value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Stun</td><td><input id="character.condition.stun" type=number min=0 max=10 readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Physical</td><td><input id="character.condition.physical" type=number min=0 readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Overflow</td><td><input id="character.condition.overflow" type=number min=0 readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Max Overflow</td><td><input id="character.condition.maxoverflow" type=number min=0 readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
+					<tr><td>Penalties</td><td><input id="character.condition.penalties" type=number min=0 readonly value=0 onchange='UpdateAttribute(this.id, this.value);' /></td></tr>
 				</tbody>
 			</table>
 		</div>

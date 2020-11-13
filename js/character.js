@@ -129,7 +129,7 @@ $(document).ready(
 					value : 0,
 					tn : 4,
 					tn_modifier : 0,
-					dicepool : 0,
+					dicepool : 'None',
 					dicepool_touse : 0,
 					complementarydice_touse : 0,
 					bonusdice_touse : 0
@@ -769,26 +769,26 @@ function CalculateConditionPenalties() {
 	var physical_penalty = 0;
 
 	//stun
-	if(stun > 1) {
+	if(stun >= 1) {
 		stun_penalty = stun_penalty + 1;
 	}
-	if(stun > 3) {
+	if(stun >= 3) {
 		stun_penalty = stun_penalty + 1;
 	}
-	if(stun > 6) {
+	if(stun >= 6) {
 		stun_penalty = stun_penalty + 1;
 	}
 
 	character.condition.stunpenalty = stun_penalty;
 
 	//physical
-	if(physical > 1) {
+	if(physical >= 1) {
 		physical_penalty = physical_penalty + 1;
 	}
-	if(physical > 3) {
+	if(physical >= 3) {
 		physical_penalty = physical_penalty + 1;
 	}
-	if(physical > 6) {
+	if(physical >= 6) {
 		physical_penalty = physical_penalty + 1;
 	}
 
