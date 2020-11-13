@@ -7,12 +7,16 @@ input[type=number] {
 }
 
 input:read-only {
-	background-color: #CCC;
+	background-color: #CCC;	
 }
 
 table {
   background-color: white;
   border: 1px solid black;
+	white-space: nowrap;
+	width: 0;
+	height: 0;
+	word-wrap: none;
 }
 
 th {

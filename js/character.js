@@ -92,6 +92,37 @@ $(document).ready(
 				}
 			},
 
+			weapons : [
+				{
+					name : '',
+					type : 'ranged',
+					skill : '',
+					skilllevel : 0,
+					ammo : {
+						current : 0,
+						maximum : 0
+					},
+					firingmode : {
+						singleshot : false,
+						semiauto : false,
+						burst : false,
+						fullauto : false
+					},
+					damagecode : {
+						power : 0,
+						damage : 'L'
+					},
+					recoilcompensation : 0,
+					range : {
+						minimum : 0,
+						short : 0,
+						medium : 0,
+						long : 0,
+						extreme : 0
+					}
+				}
+			],
+
 			skills : [
 				{
 					name : '',
@@ -165,8 +196,6 @@ $(document).ready(
 
 function CalculateCharacterStats() {
 
-	console.log('CalculateCharacterStats() under construction')
-
 	var x = 0;
 
 	character.attributes.quickness = parseInt(character.attributes.quickness);
@@ -176,16 +205,10 @@ function CalculateCharacterStats() {
 	character.attributes.charisma = parseInt(character.attributes.charisma);
 	character.attributes.willpower = parseInt(character.attributes.willpower);
 
-	//reaction
-	console.group('reaction calculation');
-	console.log('character.attributes.intelligence: ' + character.attributes.intelligence);
-	console.log('character.attributes.quickness: ' + character.attributes.quickness);
 	x = character.attributes.quickness + character.attributes.intelligence;
 	x = x/2;
 	x = Math.floor(x);
 	character.attributes.reaction = x;
-	console.log('character.attributes.reaction: ' + character.attributes.reaction);
-	console.groupEnd();
 
 	//essence = 6 - cyberwareessencepenalty
 	x = 6 - character.attributes.cyberwareessencepenalty;
@@ -260,11 +283,8 @@ function UpdateForm() {
 
 
 	UpdateConditionMonitor();
-
-	//update dice pools
 	UpdateDicePools();
-
-	//update skills
+	UpdateWeaponsForm();
 	UpdateSkillsForm();
 }
 
@@ -325,9 +345,20 @@ function UpdateDicePools() {
 }
 
 function UpdateAttribute(id, value) {
+
 	var statement = id + '="' + value + '"';
+	/*console.group('');
+	console.log('id: ' + id);
+	console.log('value: ' + value);
+	console.log('statement: ' + statement);
+	console.log('type: ' + character.weapons[0].type);
+	console.log('damage: ' + character.weapons[0].damagecode.damage);
+	console.groupEnd('');*/
 	eval( statement );
+
+	console.log('before: ' + character.weapons[0].type + ', ' + character.weapons[0].damagecode.damage);
 	CalculateCharacterStats();
+	console.log('after: ' + character.weapons[0].type + ', ' + character.weapons[0].damagecode.damage);
 }
 
 function LoadSkills() {
@@ -433,12 +464,30 @@ function AddBlankSkillRow() {
 	//dice pool dropdown selector
 	td = document.createElement('td');
 	row.appendChild(td);
-	content = document.createElement('input');
+	content = document.createElement('select');
 	td.appendChild(content);
 	content.setAttribute('id', 'character.skills[' + parseInt(rows.length-1) + '].dicepool');
-	content.value = 'none';
-	content.setAttribute('type', 'text');
-	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value)');
+	option = document.createElement('option');
+	option.text = 'None';
+	content.add(option);
+	content.value = 'None';
+	option = document.createElement('option');
+	option.text = 'Combat';
+	content.add(option);
+	option = document.createElement('option');
+	option.text = 'Control';
+	content.add(option);
+	option = document.createElement('option');
+	option.text = 'Hacking';
+	content.add(option);
+	option = document.createElement('option');
+	option.text = 'Spell';
+	content.add(option);
+	option = document.createElement('option');
+	option.text = 'Astral';
+	content.add(option);
+
 
 	//number of dice to use from selected dice pool
 	td = document.createElement('td');
@@ -495,6 +544,11 @@ function AddBlankSkillRow() {
 	UpdateDivSizeToContents('skills_div');
 }
 
+function AddNewSkillRow(name, value) {
+	character.skills.push( { name : '', value : 0, tn: 4, tn_modifier : 0, dicepool : '', dicepool_touse : 0, complementarydice_touse : 0, bonusdice_touse : 0 } );
+	AddBlankSkillRow();
+}
+
 function UpdateSkillsForm() {
 	var table = document.getElementById('skills_table');
 	var tbody = table.tBodies[0];
@@ -512,12 +566,12 @@ function UpdateSkillsForm() {
 	for(i = 0; i < character.skills.length; i++) {
 		document.getElementById('character.skills[' + i + '].name').value = character.skills[i].name;
 		document.getElementById('character.skills[' + i + '].value').value = character.skills[i].value;
-		document.getElementById('character.skills[' + i + '].value').tn = character.skills[i].tn;
-		document.getElementById('character.skills[' + i + '].value').tn_modifier = character.skills[i].tn_modifier;
-		document.getElementById('character.skills[' + i + '].value').dicepool = character.skills[i].dicepool;
-		document.getElementById('character.skills[' + i + '].value').dicepool_touse = character.skills[i].dicepool_touse;
-		document.getElementById('character.skills[' + i + '].value').complementarydice_touse = character.skills[i].complementarydice_touse;
-		document.getElementById('character.skills[' + i + '].value').bonusdice_touse = character.skills[i].bonusdice_touse;
+		document.getElementById('character.skills[' + i + '].tn').value = character.skills[i].tn;
+		document.getElementById('character.skills[' + i + '].tn_modifier').value = character.skills[i].tn_modifier;
+		document.getElementById('character.skills[' + i + '].dicepool').value = character.skills[i].dicepool;
+		document.getElementById('character.skills[' + i + '].dicepool_touse').value = character.skills[i].dicepool_touse;
+		document.getElementById('character.skills[' + i + '].complementarydice_touse').value = character.skills[i].complementarydice_touse;
+		document.getElementById('character.skills[' + i + '].bonusdice_touse').value = character.skills[i].bonusdice_touse;
 	}
 }
 
@@ -535,10 +589,7 @@ function ResetKarmaPool() {
 	CalculateCharacterStats();
 }
 
-function AddNewSkillRow(name, value) {
-	character.skills.push( { name : '', value : 0 } );
-	AddBlankSkillRow();
-}
+
 
 function importCharacter() {
 	upload.click();
@@ -804,4 +855,405 @@ function UpdateConditionMonitor() {
 	if(character.condition.overflow >= character.condition.maxoverflow) {
 		DeathAnimation();
 	}
+}
+
+function AddBlankWeaponRow() {
+
+	var table = document.getElementById('weapons_table');
+	var tbody = table.tBodies[0];
+	var rows = tbody.rows;
+	var row;
+	var option;
+
+	//row = <input type=text><input type=number>
+	row = document.createElement('tr');
+	tbody.appendChild(row);
+
+	//weapon name text input
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].name');
+	content.setAttribute('type', 'text');
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//weapon type select
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('select');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].type');
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value)');
+	option = document.createElement('option');
+	option.text = 'Ranged';
+	content.add(option);
+	option = document.createElement('option');
+	option.text = 'Melee';
+	content.add(option);
+	content.value = 'Ranged';
+
+	// Skill select
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('select');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].skill');
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value)');
+
+	for(i = 0; i < character.skills.length; i++) {
+		option = document.createElement('option');
+		option.text = character.skills[i].name;
+		content.add(option);
+	}
+
+	content.selectedIndex = 0;
+
+	//skill level
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].skilllevel');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.readOnly = true;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//roll attack button
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('button');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + ']');
+	content.innerHTML = 'Attack';
+	content.style.height = '25px';
+	content.style.width = '55px';
+	content.setAttribute('onclick', 'RollAttack(this.id);');
+
+	//ammo current
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].ammo.current');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	// slash for ammo`
+	td = document.createElement('td');
+	row.appendChild(td);
+	td.innerText = ' / ';
+
+	// ammo maximum
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].ammo.maximum');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	// firing mode checkboxes
+
+	//cb single shot
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].firingmode.singleshot');
+	content.setAttribute('type', 'checkbox');
+	content.value = false;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//cb semi-auto
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].firingmode.semiauto');
+	content.setAttribute('type', 'checkbox');
+	content.value = false;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//cb burst
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].firingmode.burst');
+	content.setAttribute('type', 'checkbox');
+	content.value = false;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//cb fullauto
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].firingmode.fullauto');
+	content.setAttribute('type', 'checkbox');
+	content.value = false;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	// weapon power input
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].damagecode.power');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	//weapon damage select
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('select');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].damagecode.damage');
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value)');
+	option = document.createElement('option');
+	option.text = 'L';
+	content.add(option);
+	option = document.createElement('option');
+	option.text = 'M';
+	content.add(option);
+	option = document.createElement('option');
+	option.text = 'S';
+	content.add(option);
+	option = document.createElement('option');
+	option.text = 'D';
+	content.add(option);
+
+
+
+	// weapon recoil compensation
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].recoilcompensation');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	// weapon range minimum
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].range.minimum');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	// weapon range short
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].range.short');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	// weapon range medium
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].range.medium');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	// weapon range long
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].range.long');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+	// weapon range extreme
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('input');
+	td.appendChild(content);
+	content.setAttribute('id', 'character.weapons[' + parseInt(rows.length-1) + '].range.extreme');
+	content.setAttribute('type', 'number');
+	content.value = 0;
+	content.setAttribute('onchange', 'UpdateAttribute(this.id, this.value);');
+
+
+	//debug buttons
+	//delete weapon button (hidden)
+	td = document.createElement('td');
+	row.appendChild(td);
+	content = document.createElement('button');
+	td.appendChild(content);
+	content.setAttribute('id', 'DeleteWeapon(' + parseInt(rows.length-1) + ')');
+	content.innerHTML = 'X';
+	content.style.textAlign = 'center';
+	content.classList.add('DeleteButton');
+	content.style.display = deletebuttondisplay;
+	content.style.height = '25px';
+	content.style.width = '35px';
+	content.setAttribute('onclick', 'DeleteWeapon(' + parseInt(rows.length - 1) + ');');
+
+
+
+	//update the div size to contain contents
+	UpdateDivSizeToContents('weapons_div');
+}
+
+function AddNewWeaponRow(name, value) {
+	character.weapons.push(
+		{
+			name : '',
+			type : 'Ranged',
+			ammo : { current : 0, maximum : 0 },
+			firingmode : { singleshot : false, semiauto : false, burst : false, fullauto : false },
+			damagecode : { power : 0, damage : 'L' },
+			recoilcompensation : 0,
+			range : { minimum : 0, short : 0, medium : 0, long : 0, extreme : 0 }
+		}
+	);
+
+	AddBlankWeaponRow();
+}
+
+
+function LoadWeapons() {
+
+	var table = document.getElementById('weapons_table');
+	var tbody = table.tBodies[0];
+	table.removeChild(tbody);
+	tbody = document.createElement('tbody');
+	table.appendChild(tbody);
+	var rows = tbody.rows;
+
+	while(rows.length < character.weapons.length) {
+		AddBlankWeaponRow();
+	}
+
+	for(i = 0; i < character.skills.length; i++) {
+		fieldName = document.getElementById('character.weapons[' + i + ']');
+		if(document.body.contains(fieldName) == false) {
+
+		}
+		fieldValue = document.getElementById('character.weapons[' + i + ']');
+		if(document.body.contains(fieldName) == false) {
+
+		}
+
+		document.getElementById('character.weapons[' + i + '].name').value = character.weapons[i].name;
+		document.getElementById('character.weapons[' + i + '].type').value = character.weapons[i].type;
+		document.getElementById('character.weapons[' + i + '].ammo.current').value = character.weapons[i].ammo.current;
+		document.getElementById('character.weapons[' + i + '].ammo.maximum').value = character.weapons[i].ammo.maximum;
+		document.getElementById('character.weapons[' + i + '].firingmode.singleshot').value = character.weapons[i].firingmode.singleshot;
+		document.getElementById('character.weapons[' + i + '].firingmode.semiauto').value = character.weapons[i].firingmode.semiauto;
+		document.getElementById('character.weapons[' + i + '].firingmode.burst').value = character.weapons[i].firingmode.burst;
+		document.getElementById('character.weapons[' + i + '].firingmode.fullauto').value = character.weapons[i].firingmode.fullauto;
+		document.getElementById('character.weapons[' + i + '].damagecode.power').value = character.weapons[i].damagecode.power;
+		document.getElementById('character.weapons[' + i + '].damagecode.damage').value = character.weapons[i].damagecode.damage;
+		document.getElementById('character.weapons[' + i + '].recoilcompensation').value = character.weapons[i].recoilcompensation;
+		document.getElementById('character.weapons[' + i + '].range.minimum').value = character.weapons[i].range.minimum;
+		document.getElementById('character.weapons[' + i + '].range.short').value = character.weapons[i].range.short;
+		document.getElementById('character.weapons[' + i + '].range.medium').value = character.weapons[i].range.medium;
+		document.getElementById('character.weapons[' + i + '].range.long').value = character.weapons[i].range.long;
+		document.getElementById('character.weapons[' + i + '].range.extreme').value = character.weapons[i].range.extreme;
+	}
+}
+
+function PopulateOptions(select, arr, attribute) {
+	var option;
+	var i;
+
+	while(select.options.length > 0) {
+		select.remove(option);
+	}
+
+	for(i = 0; i < arr.length; i++) {
+		option = document.createElement('option');
+		option.text = arr[i][attribute];
+		select.add(option);
+	}
+}
+
+function UpdateWeaponsForm() {
+	var table = document.getElementById('weapons_table');
+	var tbody = table.tBodies[0];
+	var rows = tbody.rows;
+	var i;
+
+	while(rows.length < character.weapons.length) {
+		if(character.weapons.length > 0) {
+			AddBlankWeaponRow();
+		} else {
+			AddNewWeaponRow();
+		}
+	}
+
+	for(i = 0; i < character.weapons.length; i++) {
+		document.getElementById('character.weapons[' + i + '].name').value = character.weapons[i].name;
+		document.getElementById('character.weapons[' + i + '].type').value = character.weapons[i].type;
+		document.getElementById('character.weapons[' + i + '].skill').options = PopulateOptions(document.getElementById('character.weapons[' + i + '].skill'), character.skills, 'name');
+		document.getElementById('character.weapons[' + i + '].skill').value = character.weapons[i].skill;
+		character.weapons[i].skilllevel = GetSkillLevel(character.weapons[i].skill);
+		document.getElementById('character.weapons[' + i + '].skilllevel').value = character.weapons[i].skilllevel;
+
+		document.getElementById('character.weapons[' + i + '].ammo.current').value = character.weapons[i].ammo.current;
+		document.getElementById('character.weapons[' + i + '].ammo.maximum').value = character.weapons[i].ammo.maximum;
+		document.getElementById('character.weapons[' + i + '].firingmode.singleshot').value = character.weapons[i].firingmode.singleshot;
+		document.getElementById('character.weapons[' + i + '].firingmode.semiauto').value = character.weapons[i].firingmode.semiauto;
+		document.getElementById('character.weapons[' + i + '].firingmode.burst').value = character.weapons[i].firingmode.burst;
+		document.getElementById('character.weapons[' + i + '].firingmode.fullauto').value = character.weapons[i].firingmode.fullauto;
+		document.getElementById('character.weapons[' + i + '].damagecode.power').value = character.weapons[i].damagecode.power;
+		console.log(character.weapons[i].damagecode.damage);
+		//document.getElementById('character.weapons[' + i + '].damagecode.damage').value = GetSelectedIndex(document.getElementById('character.weapons[' + i + '].type'), character.weapons[i].damagecode.damage);
+		document.getElementById('character.weapons[' + i + '].recoilcompensation').value = character.weapons[i].recoilcompensation;
+		document.getElementById('character.weapons[' + i + '].range.minimum').value = character.weapons[i].range.minimum;
+		document.getElementById('character.weapons[' + i + '].range.short').value = character.weapons[i].range.short;
+		document.getElementById('character.weapons[' + i + '].range.medium').value = character.weapons[i].range.medium;
+		document.getElementById('character.weapons[' + i + '].range.long').value = character.weapons[i].range.long;
+		document.getElementById('character.weapons[' + i + '].range.extreme').value = character.weapons[i].range.extreme;
+	}
+}
+
+function GetSkillLevel(name) {
+	var skill;
+	var i;
+
+	for(i=0; i < character.skills.length; i++) {
+		skill = character.skills[i];
+		if(skill.name == name) {
+			return skill.value;
+		}
+	}
+	return 0;
+}
+
+function DeleteWeapon(row_index) {
+	if(PromptYesNo()) {
+		//document.getElementById('skills_table').tBodies[0].deleteRow(row_index);
+		character.weapons.splice(row_index, 1);
+		LoadWeapons();
+	}
+}
+
+function GetSelectedIndex(select, text) {
+	var i;
+	var options = select.options;
+	for(i = 0; i < options.length; i++) {
+		if(options[i].value == text ) {
+			return i;
+		}
+	}
+	return 0;
 }
