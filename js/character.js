@@ -348,17 +348,17 @@ function UpdateAttribute(id, value) {
 
 	var statement = id + '="' + value + '"';
 	/*console.group('');
-	console.log('id: ' + id);
-	console.log('value: ' + value);
-	console.log('statement: ' + statement);
-	console.log('type: ' + character.weapons[0].type);
-	console.log('damage: ' + character.weapons[0].damagecode.damage);
+
+
+
+
+
 	console.groupEnd('');*/
 	eval( statement );
 
-	console.log('before: ' + character.weapons[0].type + ', ' + character.weapons[0].damagecode.damage);
+
 	CalculateCharacterStats();
-	console.log('after: ' + character.weapons[0].type + ', ' + character.weapons[0].damagecode.damage);
+
 }
 
 function LoadSkills() {
@@ -615,13 +615,13 @@ const CopyToClipboard = str => {
 };
 
 function RollOpen(skill, skilldice, pool, pooldice, complementarydice, bonusdice) {
-	console.log('rolling open');
-	console.log('skill: ' + skill);
-	console.log('dice: ' + skilldice);
-	console.log('pool: ' + pool);
-	console.log('pooldice: ' + pooldice);
-	console.log('complementarydice: ' + complementarydice);
-	console.log('bonusdice: ' + bonusdice);
+
+
+
+
+
+
+
 
 	//&{template:default} {{name=Open Skill Test}} {{attack=[[5d6kh1!!]]}} {{Damage=[[6]]S}}
 	var text =  '&{template:default}'
@@ -634,13 +634,13 @@ function RollOpen(skill, skilldice, pool, pooldice, complementarydice, bonusdice
 }
 
 function RollVsTN(skill, skilldice, tn, pool, pooldice, complementarydice, bonusdice) {
-	console.log('rolling vs TN');
-	console.log('dice: ' + skilldice);
-	console.log('tn: ' + tn);
-	console.log('pool: ' + pool);
-	console.log('pooldice: ' + pooldice);
-	console.log('complementarydice: ' + complementarydice);
-	console.log('bonusdice: ' + bonusdice);
+
+
+
+
+
+
+
 
 	//&{template:default} {{name=Pistols (Open)}} {{attack=[[5d6kh1!!]]}} {{Damage=[[6]]S}}
 	var text =  '&{template:default}'
@@ -695,7 +695,7 @@ function DamageTrackClicked(amount, type) {
 	var track;
 	var current;
 	var total = 0;
-	console.log(type);
+
 	switch(type) {
 		case 'stun':
 			track = document.getElementsByName('stunDamage');
@@ -707,13 +707,13 @@ function DamageTrackClicked(amount, type) {
 			break;
 	}
 
-	console.log(new String(amount).valueOf());
-	console.log(new String(current).valueOf());
+
+
 	if(new String(amount).valueOf() == new String(current).valueOf() ) {
 		amount = parseInt(amount) - 1;
 	}
 
-	console.log('entering: SetDamage(' + amount + ', ' + type + ')');
+
 	SetDamage(amount, type);
 
 }
@@ -929,7 +929,7 @@ function AddBlankWeaponRow() {
 	content.innerHTML = 'Attack';
 	content.style.height = '25px';
 	content.style.width = '55px';
-	content.setAttribute('onclick', 'RollAttack(this.id);');
+	content.setAttribute('onclick', 'RollAttack(' + parseInt(rows.length -1) + ');');
 
 	//ammo current
 	td = document.createElement('td');
@@ -1215,7 +1215,7 @@ function UpdateWeaponsForm() {
 		document.getElementById('character.weapons[' + i + '].firingmode.burst').value = character.weapons[i].firingmode.burst;
 		document.getElementById('character.weapons[' + i + '].firingmode.fullauto').value = character.weapons[i].firingmode.fullauto;
 		document.getElementById('character.weapons[' + i + '].damagecode.power').value = character.weapons[i].damagecode.power;
-		console.log(character.weapons[i].damagecode.damage);
+
 		//document.getElementById('character.weapons[' + i + '].damagecode.damage').value = GetSelectedIndex(document.getElementById('character.weapons[' + i + '].type'), character.weapons[i].damagecode.damage);
 		document.getElementById('character.weapons[' + i + '].recoilcompensation').value = character.weapons[i].recoilcompensation;
 		document.getElementById('character.weapons[' + i + '].range.minimum').value = character.weapons[i].range.minimum;
