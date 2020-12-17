@@ -1,0 +1,29 @@
+body {
+  background-color: #111;
+}
+
+.pagecontainer {
+  min-width: 540px;
+  max-width: 930;
+  width: auto;
+  margin-left: 3px;
+  display: inline-block;
+}
+
+section {
+  overflow: scroll;
+  max-height: 450px;
+  height: 100%;
+}
+
+.rightaligntext {
+  text-align: right;
+}
+
+.hideable {
+
+}
+
+.hidden {
+  display: none;
+}

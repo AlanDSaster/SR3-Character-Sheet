@@ -1,0 +1,39 @@
+input:read-only,
+textarea:read-only {
+  background-color: #aaa;
+}
+
+input[type=number] {
+  min-width: 45px;
+  width: 45px;
+}
+input[type=number].mediumlength {
+  width: 65px;
+}
+
+input[type=text] {
+  min-width: 100px;
+  width: 100%;
+}
+input[type=text].short {
+  min-width: 45px;
+  width: 100%;
+}
+
+select {
+  min-width: 45px;
+  width: 100%;
+}
+
+button {
+  min-width: 45px;
+  width: 100%;
+}
+
+button.delete:hover {
+  background-color: #B00;
+}
+
+.fillparent {
+  width: 100%;
+}

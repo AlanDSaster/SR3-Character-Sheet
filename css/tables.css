@@ -1,0 +1,27 @@
+table,
+th,
+td {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  white-space: nowrap;
+  word-wrap: nowrap;
+  width: 1%;
+}
+
+td,
+th {
+  width: 1%;
+}
+
+tbody {
+  border-top: 2px solid #333;
+}
+
+
+
+
+#CharacterCyberwareTable td,
+#CharacterCyberwareTable th {
+  min-width: 100px;
+
+}

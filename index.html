@@ -1,0 +1,384 @@
+<html>
+  <head>
+    <title>SR3 Character Sheet, Revision: 12/17/2020, 4:05 PM</title>
+
+    <link rel='stylesheet' href='css/index.css'>
+    <link rel='stylesheet' href='css/collapsibles.css'>
+    <link rel='stylesheet' href='css/tables.css'>
+    <link rel='stylesheet' href='css/inputs.css'>
+
+    <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
+    <script src='js/Character.js'>          </script>
+    <script src='js/CollapsiblesHandler.js'></script>
+    <script src='js/GenerateSkillsTable.js'></script>
+    <script src='js/ShowHideElements.js'>   </script>
+    <script src='js/WeaponsTable.js'>       </script>
+
+  </head>
+
+  <body>
+
+    <div class='pagecontainer'>
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterSheetMenuSection");'>Menu</button>
+      <section id='CharacterSheetMenuSection' class='collapsible_section'>
+        <div>
+          <button>New Character</button>
+          <button>Load Character</button>
+          <button onclick='UncollapseAllCollapsibles();'>Expand All Sections</button>
+          <button onclick='CollapseAllCollapsibles();'>Collapse All Sections</button>
+        </div>
+      </section>
+
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterBioSection");'>Bio</button>
+      <section id='CharacterBioSection' class='collapsible_section'>
+        <table id='CharacterBioTable'>
+          <tbody>
+            <tr>
+              <td><input type='text' placeholder='First Name' /></td>
+              <td><input type='text' placeholder='Last Name' /></td>
+              <th>Age</th>
+              <td><input type='number' class='mediumlength' /></td>
+              <td rowspan=3><textarea class='fillparent longtext' placeholder='Description'></textarea></td>
+            </tr>
+
+            <tr>
+              <td colspan=2><input type='text' placeholder='Alias' /></td>
+              <th>Height (cm)</th>
+              <td class='fitcontents'><input type='number' class='mediumlength' /></td>
+            </tr>
+
+            <tr>
+              <td><select class='fillparent'><option>Human</option><option>Elf</option><option>Troll</option></td>
+              <td><label class='key'>Ghoul</label><input type='checkbox' class='value'/></td>
+              <th>Weight (kg)</th>
+              <td><input type='number' class='mediumlength' step=0.01 /></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+
+
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterAbilitiesSection");'>Abilities</button>
+      <section id='CharacterAbilitiesSection' class='collapsible_section'>
+        <table id='CharacterAbilitiesTable'>
+          <tbody>
+            <tr>
+              <th></th>
+              <th>Body</th>
+              <th>Quickness</th>
+              <th>Strength</th>
+              <th>Intelligence</th>
+              <th>Charisma</th>
+              <th>Willpower</th>
+              <th rowspan=4 class='divider'></th>
+              <th>Essence</th>
+              <th>Reaction</th>
+              <th>Magic</th>
+            </tr>
+            <tr>
+              <th>Natural:</th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <!-- rowspan -->
+              <th><input type='number'  value=6 readonly /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+            </tr>
+            <tr>
+              <th>Augmented:</th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <!-- rowspan -->
+              <th><input type='number'  value=6 readonly /></th>
+              <th><input type='number'  /></th>
+            </tr>
+            <tr>
+              <th>Magic Bonus:</th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <th><input type='number' /></th>
+              <!-- rowspan -->
+              <!-- blank -->
+              <th></th>
+              <th><input type='number'  /></th>
+            </tr>
+
+          </tbody>
+        </table>
+      </section>
+
+
+
+
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterCyberwareSection");'>Cyberware</button>
+      <section id='CharacterCyberwareSection' class='collapsible_section'>
+        <table id='CharacterCyberwareTable'>
+          <tbody>
+            <tr>
+              <th></th>
+              <th>Head</th>
+              <th>L Arm</th>
+              <th>R Arm</th>
+              <th>Body</th>
+              <th>L Leg</th>
+              <th>R Leg</th>
+            </tr>
+            <tr>
+              <th>Cyberware:</th>
+              <th><select><option>None</option></select></th>
+              <th><select><option>None</option><option>Partial Cyberlimb</option><option>Full Cyberlimb</option></select></th>
+              <th><select><option>None</option><option>Partial Cyberlimb</option><option>Full Cyberlimb</option></select></th>
+              <th><select><option>None</option></select></th>
+              <th><select><option>None</option><option>Partial Cyberlimb</option><option>Full Cyberlimb</option></select></th>
+              <th><select><option>None</option><option>Partial Cyberlimb</option><option>Full Cyberlimb</option></select></th>
+            </tr>
+            <tr>
+              <th>Strength</th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+            </tr>
+            <tr>
+              <th>Quickness</th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+            </tr>
+            <tr>
+              <th>Armor</th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+            </tr>
+            <tr>
+              <th>Reaction</th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+            </tr>
+            <tr>
+              <th>Initiative Dice</th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+            </tr>
+            <tr>
+              <th>Gyrostabilization</th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+              <th><input type='number'  /></th>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+
+
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterConditionMonitorSection");'>Condition Monitor</button>
+      <section id='CharacterConditionMonitorSection' class='collapsible_section'>
+        <table id='CharacterConditionMonitorTable'>
+          <tbody>
+            <tr>
+              <th></th>
+              <th>Damage<br>Taken</th>
+              <th>Wound<br>Penalty</th>
+              <th></th>
+              <th colspan=4>Take<br>Damage</th>
+              <!-- colspan -->
+              <!-- colspan -->
+            </tr>
+            <tr>
+              <th>Stun</th>
+              <td><input type='number' min=0 max=10 value=0 class='shortnumber fillparent' /></td>
+              <td><input type='number' value=0 readonly class='shortnumber fillparent' />
+              <td><!-- blank --></td>
+              <td><button class='fillparent'>L</button></td>
+              <td><button class='fillparent'>M</button></td>
+              <td><button class='fillparent'>S</button></td>
+              <td><button class='fillparent'>D</button></td>
+            </tr>
+            <tr>
+              <th>Physical</th>
+              <td><input type='number' min=0 max=10 value=0 class='shortnumber fillparent' /></td>
+              <td><input type='number' value=0 readonly class='shortnumber fillparent' />
+              <td><!-- blank --></td>
+              <td><button class='fillparent'>L</button></td>
+              <td><button class='fillparent'>M</button></td>
+              <td><button class='fillparent'>S</button></td>
+              <td><button class='fillparent'>D</button></td>
+            </tr>
+            <tr>
+              <th>Overflow</th>
+              <td><input type='number' min=0 value=0 class='shortnumber fillparent' /></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterRangedWeaponsSection");'>Ranged Weapons</button>
+      <section id='CharacterRangedWeaponsSection' class='collapsible_section'>
+        <table id='RangedWeaponsTable'>
+
+          <tfoot id='RangedWeaponsTableFoot'>
+            <tr>
+              <td>
+                <button onclick='RANGEDWEAPONSTABLE.AddEntry();'>Add</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+
+
+
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterMagicSection");'>Magic</button>
+      <section id='CharacterMagicSection' class='collapsible_section'>
+        <table id='MagicTable'>
+          <tbody>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>Drain</th>
+              <th>power</th>
+              <th style='width: 45px;'>damage</th>
+              <th style='width: 500px;'>Description</th>
+            </tr>
+            <tr>
+              <td rowspan=3><button class='hidden delete'>X</button></td>
+              <td colspan=2><input type='text' placeholder='Spell Name' /></td>
+              <!--<td><input type='number'  /></td>-->
+              <td><button class='fillparent'>Cast Spell</button></td>
+              <th>Base:</th>
+              <td><input type='number'  /></td>
+              <td><select class='fill_width'><option>L</option><option>M</option><option>S</option><option>D</option></select></td>
+              <td rowspan=4><textarea class='fillparent' placeholder='Enter description of spell'></textarea></td>
+            </tr>
+            <tr>
+              <th>Force:</th>
+              <td><input type='number'  /></td>
+              <td><label class='key'>Exclusive</label><input class='value' type='checkbox' /></td>
+              <th>Modifier:</th>
+              <td><input type='number'  /></td>
+              <td><input type='number' class='fill_width' /></td>
+            </tr>
+            <tr>
+              <th>TN:</th>
+              <td><input type='number'  /></td>
+              <td><label class='key'>Fetish</label><input class='value' type='checkbox' /></td>
+              <th>Total:</th>
+              <td><input type='number'  readonly /></td>
+              <td><input type='text' class='fill_width' readonly /></td>
+
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <button>Add</button>
+              </td>
+              <td>
+                <button>Delete</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterSkillsSection");'>Skills</button>
+      <section id='CharacterSkillsSection' class='collapsible_section'>
+        <table id='SkillsTable'>
+          <thead id='SkillsTableHead'>
+            <tr>
+              <th></th>
+              <th></th>
+              <th>Ranks</th>
+              <th></th>
+              <th>TN</th>
+              <th>TN<br>Modifier</th>
+              <th>Bonus<br>Dice</th>
+            </tr>
+          </thead>
+
+          <tbody id='SkillsTableBody'>
+            <tr>
+              <td rowspan=2><button class='hidden delete'>X</button></td>
+              <td><input type='text' placeholder='Skill Name' /></td>
+              <td><input type='number'  /></td>
+              <td><button>Roll VsTN</button></td>
+              <td><input type='number'  /></td>
+              <td><input type='number'  /></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><button>Roll Open</button></td>
+            </tr>
+          </tbody>
+
+          <tfoot id='SkillsTableFoot'>
+            <tr>
+              <td>
+                <button onclick='AddSkill();'>Add</button>
+              </td>
+              <td>
+                <button onclick='ToggleDeleteButtons("SkillsTable");'>Delete</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+
+
+
+
+    </div><!-- end of pagecontainer -->
+  </body>
+</html>
