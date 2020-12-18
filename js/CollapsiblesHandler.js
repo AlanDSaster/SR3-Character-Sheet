@@ -1,6 +1,7 @@
 $(function() {
   CollapseAllCollapsibles();
-  ToggleCollapsibleSection('CharacterRangedWeaponsSection');
+  UncollapseCollapsible('CharacterRangedWeaponsSection');
+  UncollapseCollapsible('CharacterRangedAttackConditionsSection');
 });
 
 

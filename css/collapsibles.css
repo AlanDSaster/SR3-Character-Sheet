@@ -31,3 +31,11 @@
 .active, .CollapsibleButton:hover {
   background-color: #555;
 }
+
+.uncollapsible_section {
+  background-color: #eee;
+  height: auto;
+  max-height: 425px;
+  overflow: auto;
+  transition: max-height 0.2s ease-in;
+}

@@ -4,8 +4,8 @@ body {
 
 .pagecontainer {
   min-width: 540px;
-  max-width: 930;
-  width: auto;
+  max-width: 99vw;
+  width: 100%;
   margin-left: 3px;
   display: inline-block;
 }
@@ -26,4 +26,15 @@ section {
 
 .hidden {
   display: none;
+}
+
+textarea[name='Bio.description'] {
+  min-width: 567px;
+  min-height: 72px;
+  overflow: scroll;
+}
+textarea[name='Spell.description'] {
+  min-width: 567px;
+  min-height: 72px;
+  overflow: scroll;
 }

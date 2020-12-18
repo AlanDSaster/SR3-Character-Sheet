@@ -8,11 +8,17 @@
     <link rel='stylesheet' href='css/inputs.css'>
 
     <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
-    <script src='js/Character.js'>          </script>
-    <script src='js/CollapsiblesHandler.js'></script>
-    <script src='js/GenerateSkillsTable.js'></script>
-    <script src='js/ShowHideElements.js'>   </script>
-    <script src='js/WeaponsTable.js'>       </script>
+    <script src='js/Character.js'>                  </script>
+    <script src='js/CollapsiblesHandler.js'>        </script>
+    <script src='js/GenerateSkillsTable.js'>        </script>
+    <script src='js/GlobalVariablesAndFunctions.js'></script>
+    <script src='js/RangedAttackConditions.js'>     </script>
+    <script src='js/RangedAttackHandler.js'>        </script>
+    <script src='js/ShowHideElements.js'>           </script>
+    <script src='js/RangedAttackConditions.js'>     </script>
+    <script src='js/RangedWeapons.js'>              </script>
+    <script src='js/RangedWeaponsTable.js'>         </script>
+    <script src='js/Vision.js'>                        </script>
 
   </head>
 
@@ -40,7 +46,7 @@
               <td><input type='text' placeholder='Last Name' /></td>
               <th>Age</th>
               <td><input type='number' class='mediumlength' /></td>
-              <td rowspan=3><textarea class='fillparent longtext' placeholder='Description'></textarea></td>
+              <td rowspan=3><textarea name='Bio.description' class='fillparent longtext' placeholder='Description'></textarea></td>
             </tr>
 
             <tr>
@@ -50,7 +56,16 @@
             </tr>
 
             <tr>
-              <td><select class='fillparent'><option>Human</option><option>Elf</option><option>Troll</option></td>
+              <td>
+                <select class='fillparent'>
+                  <option>Human</option>
+                  <option>Dwarf</option>
+                  <option>Elf</option>
+                  <option>Ork</option>
+                  <option>Shapeshifter</option>
+                  <option>Troll</option>
+                </select>
+              </td>
               <td><label class='key'>Ghoul</label><input type='checkbox' class='value'/></td>
               <th>Weight (kg)</th>
               <td><input type='number' class='mediumlength' step=0.01 /></td>
@@ -267,13 +282,148 @@
             </tr>
           </tfoot>
         </table>
+
+
+      </section>
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterRangedAttackConditionsSection");'>Ranged Attack Conditions</button>
+      <section id='CharacterRangedAttackConditionsSection' class='collapsible_section'>
+
+        <table id='RangedAttackConditionsTable'>
+          <tbody>
+            <tr>
+              <th><!-- Meters from Target -->
+                Meters From Target
+              </th>
+              <th><!-- Target Movement -->
+                Target Movement
+              </th>
+              <th><!-- Attack Options -->
+                Attack options
+              </th>
+              <th><!-- Vision Type -->
+                Vision Type
+              </th>
+            </tr>
+            <tr>
+              <td><!-- Meters From Taget -->
+                <input name='RangedAttackConditions.meters_from_target' type='number' class='short' value=0 min=0 onchange='Update();' />
+              </td>
+              <td><!-- Target Movement -->
+                <select name='RangedAttackConditions.target_movement' onchange='Update();' >
+                  <option>Stationary (-1)</option>
+                  <option>Walking (+0)</option>
+                  <option>Running (+2)</option>
+                </select>
+              </td>
+              <td><!-- Attack Options -->
+                <input type='checkbox' name='RangedAttackConditions.blind_fire' onclick='Update();' /> Blind Fire (+8)
+              </td>
+              <th><!-- Vision Type -->
+                <select name='RangedAttackConditions.vision_type' onchange='Update();' >
+                  <option value=0>Normal</option>
+                  <option value=1>Augmented Low-Light</option>
+                  <option value=2>Natural Low-Light</option>
+                  <option value=3>Augmented Thermographic</option>
+                  <option value=4>Natural Thermographic</option>
+                </select>
+              </th>
+            </tr>
+            <tr>
+              <th>
+                Aim Actions
+              </th>
+              <th><!-- Attacker Movement -->
+                Attacker Movement
+              </th>
+              <td><!-- Attack Options -->
+                <input type='checkbox' name='RangedAttackConditions.partial_cover' onclick='Update();' /> Partial Cover (+4)
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input name='RangedAttackConditions.aim_actions' type='number' class='short' value=0 min=0 onchange='Update();' />
+              </td>
+              <td><!-- Difficult Ground -->
+                <select name='RangedAttackConditions.attacker_movement' onchange='Update();' >
+                  <option>Stationary (+0)</option>
+                  <option>Walking (+1)</option>
+                  <option>Walking, Difficult Ground (+2)</option>
+                  <option>Running (+4)</option>
+                  <option>Running, Difficult Ground (+6)</option>
+                </select>
+              </td>
+              <td><!-- Attack Options -->
+                <input type='checkbox' name='RangedAttackConditions.using_second_firearm' onclick='Update();' /> Using Second Firearm (+2)
+              </td>
+              <th><!-- Vision Conditions -->
+                Vision Conditions
+              </th>
+            </tr>
+            <tr>
+              <th><!-- Number of Targets -->
+                Number of Targets
+              </th>
+              <th><!-- Gyrostabilization -->
+                Gyro Stabilization
+              </th>
+              <td><!-- Attack Options -->
+                <input type='checkbox' name='RangedAttackConditions.called_shot' onchange='Update();' /> Called Shot (+4)
+              </td>
+              <th><!-- Vision Conditions -->
+                <select name='RangedAttackConditions.visibility' onchange='Update();' >
+                  <option value=0>Normal</option>
+                  <option value=1>Full Darkness</option>
+                  <option value=2>Minimal Light</option>
+                  <option value=3>Partial Light</option>
+                  <option value=4>Glare</option>
+                  <option value=5>Mist</option>
+                  <option value=6>Light Smoke/Fog/Rain</option>
+                  <option value=7>Heavy Smoke/Fog/Rain</option>
+                  <option value=8>Thermal Smoke</option></select>
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <input name='RangedAttackConditions.targets' type='number' class='short' value=1 min=1 onchange='Update();' />
+              </td>
+              <th><!-- Gyrostabilization -->
+                <input name='RangedAttackConditions.gyrostabilization' type='number' class='short' value=0 onchange='Update();' />
+              </th>
+              <td><!-- Left Blank -->
+              </td>
+              <td><!-- Vision Conditions -->
+                <input name='RangedAttackConditions.flashlight' type='checkbox' onclick='Update();' /> Flashlight (-4)
+              </td>
+            </tr>
+            <tr>
+              <th><!-- Other Modifiers -->
+                Other TN Modifiers
+              </th>
+              <th>
+                Recoil Compensation
+              </th>
+              <td><!-- Left Blank -->
+              </td>
+              <td><!-- Vision Conditions -->
+                <input name='RangedAttackConditions.light_spell' type='checkbox' onclick='Update();' /> Light Spell, Force: <input name='RangedAttackConditions.light_spell_force' type='number' value=0 min=0 onchange='Update();' />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input name='RangedAttackConditions.othermodifiers' type='number' value=0 onchange='Update();' />
+              </td>
+              <th>
+                <input name='RangedAttackConditions.recoil_compensation' type='number' value=0 onchange='Update();' />
+              </th>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
 
 
-
-
-      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterMagicSection");'>Magic</button>
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("CharacterMagicSection");'>Spellcasting</button>
       <section id='CharacterMagicSection' class='collapsible_section'>
         <table id='MagicTable'>
           <tbody>
@@ -327,6 +477,15 @@
           </tfoot>
         </table>
       </section>
+
+
+
+
+      <button class='collapsible_button' onclick='ToggleCollapsibleSection("SpellcastingConditionsSection");'>Spellcasting Conditions</button>
+      <section id='SpellcastingConditionsSection' class='collapsible_section'>
+        <h3>Under Construction</h3>
+      </section>
+
 
 
 
