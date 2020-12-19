@@ -8,8 +8,8 @@ function GetRangedAttackConditions() {
   meters_from_target = parseInt(document.getElementsByName(`${prefix}meters_from_target`)[0].value);
   aim_actions = parseInt(document.getElementsByName(`${prefix}aim_actions`)[0].value);
   targets = parseInt(document.getElementsByName(`${prefix}targets`)[0].value);
-  target_movement = parseInt(document.getElementsByName(`${prefix}target_movement`)[0].value);
-  attacker_movement = parseInt(document.getElementsByName(`${prefix}attacker_movement`)[0].value);
+  target_movement = document.getElementsByName(`${prefix}target_movement`)[0].value;
+  attacker_movement = document.getElementsByName(`${prefix}attacker_movement`)[0].value;
   gyrostabilization = parseInt(document.getElementsByName(`${prefix}gyrostabilization`)[0].value);
   blind_fire = document.getElementsByName(`${prefix}blind_fire`)[0].checked;
   partial_cover = document.getElementsByName(`${prefix}partial_cover`)[0].checked;
